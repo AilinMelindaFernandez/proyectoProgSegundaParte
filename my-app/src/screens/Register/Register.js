@@ -14,11 +14,17 @@ class Register extends Component {
 
     register (email, pass){
         auth.createUserWithEmailAndPassword(email, pass)
-            .then(()=>{
-                console.log('Registrado ok');
+            .then( response => {
+                //Cuando firebase responde sin error
+                console.log('Registrado ok', response);
+
+                 //Cambiar los estados a vacío como están al inicio.
+
             })
             .catch( error => {
+                //Cuando Firebase responde con un error
                 console.log(error);
+
             })
     }
 
@@ -44,12 +50,15 @@ class Register extends Component {
                     style={styles.input}
                     onChangeText={(text)=>this.setState({password: text})}
                     placeholder='password'
-                    keyboardType='email-address'
+                    keyboardType='default'
                     secureTextEntry={true}
                     value={this.state.password}
                 />
                 <TouchableOpacity style={styles.button} onPress={()=>this.register(this.state.email, this.state.password)}>
                     <Text style={styles.textButton}>Registrarse</Text>    
+                </TouchableOpacity>
+                <TouchableOpacity onPress={ () => this.props.navigation.navigate('Login')}>
+                   <Text>Ya tengo cuenta. Ir al login</Text>
                 </TouchableOpacity>
             </View>
         )
@@ -89,6 +98,3 @@ const styles = StyleSheet.create({
 
 
 export default Register;
-
-
-
