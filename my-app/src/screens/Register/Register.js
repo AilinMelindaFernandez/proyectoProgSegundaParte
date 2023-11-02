@@ -11,8 +11,21 @@ class Register extends Component {
             password:''
         }
     }
+    componentDidMount(){
+        console.log("Chequear si el usuario está loguado en firebase.");
 
-    register (email, pass){
+        auth.onAuthStateChanged( user => {
+            console.log(user)
+            if( user ){
+                //Redirigir al usuario a la home del sitio.
+                this.props.navigation.navigate('Menu')
+            }
+
+        } )
+
+    }
+
+    register (email, pass, userName){
         auth.createUserWithEmailAndPassword(email, pass)
             .then( response => {
                 //Cuando firebase responde sin error

@@ -1,5 +1,6 @@
 import react, { Component } from 'react';
 import {TextInput, TouchableOpacity, View, Text, StyleSheet} from 'react-native';
+import { auth } from '../../firebase/config';
 
 class Home extends Component {
     constructor(){
@@ -8,6 +9,11 @@ class Home extends Component {
       
         }
     }
+    logout(){
+        auth.signOut();
+         //Redirigir al usuario a la home del sitio.
+         this.props.navigation.navigate('Login')
+    }
 
 
 
@@ -15,6 +21,9 @@ class Home extends Component {
         return(
             <View>
                 <Text>HOME</Text>
+                <TouchableOpacity onPress={()=>this.logout()}>
+                    <Text>Logout</Text>
+                </TouchableOpacity>
             </View>
         )
     }
