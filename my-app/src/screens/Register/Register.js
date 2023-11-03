@@ -1,6 +1,8 @@
 import react, { Component } from 'react';
 import { auth } from '../../firebase/config';
-import {TextInput, TouchableOpacity, View, Text, StyleSheet} from 'react-native';
+import {TextInput, TouchableOpacity, View, Text, StyleSheet,ImageBackground} from 'react-native';
+
+const imagen="../imgen.png";
 
 class Register extends Component {
     constructor(){
@@ -22,7 +24,7 @@ class Register extends Component {
             }
 
         } )
-
+        
     }
 
     register (email, pass, userName){
@@ -40,71 +42,126 @@ class Register extends Component {
 
             })
     }
+   
 
     render(){
         return(
-            <View style={styles.formContainer}>
-                <Text>Register</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(text)=>this.setState({email: text})}
-                    placeholder='email'
-                    keyboardType='email-address'
-                    value={this.state.email}
-                    />
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(text)=>this.setState({userName: text})}
-                    placeholder='user name'
-                    keyboardType='default'
-                    value={this.state.userName}
-                    />
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(text)=>this.setState({password: text})}
-                    placeholder='password'
-                    keyboardType='default'
-                    secureTextEntry={true}
-                    value={this.state.password}
-                />
-                <TouchableOpacity style={styles.button} onPress={()=>this.register(this.state.email, this.state.password)}>
-                    <Text style={styles.textButton}>Registrarse</Text>    
-                </TouchableOpacity>
-                <TouchableOpacity onPress={ () => this.props.navigation.navigate('Login')}>
-                   <Text>Ya tengo cuenta. Ir al login</Text>
-                </TouchableOpacity>
-            </View>
+            <ImageBackground  style={styles.fondo} source={{uri:"https://i.postimg.cc/8z0bSn0b/circle-scatter-haikei-2.png"}}resizeMode='cover'>
+                <View style={styles.Container}>
+                    
+                    <View style={styles.titulo}>
+                        <Text style={styles.Registrarse}>Sing Up</Text>
+                    </View>
+
+                    <View style={styles.formulario}>
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={(text)=>this.setState({email: text})}
+                            placeholder='Email'
+                            keyboardType='email-address'
+                            value={this.state.email}
+                            />
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={(text)=>this.setState({userName: text})}
+                            placeholder='User Name'
+                            keyboardType='default'
+                            value={this.state.userName}
+                            />
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={(text)=>this.setState({password: text})}
+                            placeholder='Password'
+                            keyboardType='default'
+                            secureTextEntry={true}
+                            value={this.state.password}
+                        />
+                    
+
+                        <TouchableOpacity style={styles.button} onPress={()=>this.register(this.state.email, this.state.password)}>
+                            <Text style={styles.textButton}>Registrarse</Text>    
+                        </TouchableOpacity>
+                    
+                        <TouchableOpacity style={styles.login} onPress={ () => this.props.navigation.navigate('Login')}>
+                            <Text style={styles.loginText}>
+                                Ya tengo un cuenta. 
+                                <Text style={styles.loginTextNegrita}>Ir al login</Text>
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </ImageBackground>
+
         )
     }
 }
 
 const styles = StyleSheet.create({
-    formContainer:{
-        paddingHorizontal:10,
-        marginTop: 20,
+    fondo:{
+        flex:6
+    },
+    Container:{
+        flex:6,
+        flexWrap: 'wrap',
+        paddingHorizontal:30,
+        paddingVertical:60,
+        flexDirection: "colum",
+        justifyContent:"flex-start",
+        alingItems:"center",
+    },
+    titulo:{
+        flex:1,
+    },
+    Registrarse:{
+       marginVertical:20,
+        fontSize: 60,
+        textAlign: 'center',
+        alignSelf:"center",
+        color:"white",
+        fontWeight: 'bold',
+        fontFamily: 'tahoma',
+    },
+    formulario:{
+        flex:5,
+        marginTop:50
     },
     input:{
+        backgroundColor:"#ff8fab",
         height:20,
-        paddingVertical:15,
-        paddingHorizontal: 10,
-        borderWidth:1,
-        borderColor: '#ccc',
-        borderStyle: 'solid',
-        borderRadius: 6,
-        marginVertical:10,
+        fontSize:20,
+        color:"white",
+        paddingVertical: 40,
+        paddingHorizontal: 40,
+        borderRadius:70, 
+        /*borderBottomWidth:4,
+        borderBottomColor:"white",*/
+        marginVertical:20,
     },
     button:{
-        backgroundColor:'#28a745',
-        paddingHorizontal: 10,
-        paddingVertical: 6,
-        textAlign: 'center',
-        borderRadius:4, 
-        borderWidth:1,
-        borderStyle: 'solid',
-        borderColor: '#28a745'
+        backgroundColor:"white",
+        paddingVertical: 20,
+        paddingHorizontal: 40,
+        borderRadius:70, 
+        marginTop:40,
+
     },
     textButton:{
-        color: '#fff'
+        textAlign:"center",
+        fontSize:20,
+        color:"#fb6f92",
+        fontWeight: 'bold',
+        fontFamily: 'tahoma',
+    },
+    login:{
+        marginVertical:25,
+    },
+    loginText:{
+        fontSize:18,
+        textAlign:"center",
+        color:"#ffc2d1",
+    },
+    loginTextNegrita:{
+        fontWeight: 'bold',
     }
 
 })
