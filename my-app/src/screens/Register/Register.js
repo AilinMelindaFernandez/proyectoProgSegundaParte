@@ -10,9 +10,9 @@ class Register extends Component {
         this.state={
             email:'',
             userName:'',
-            password:'',
             miniBio:'',
-            fotoDePerfil:''
+            fotoDePerfil:'',
+            password:'',
         }
     }
     componentDidMount(){
@@ -29,7 +29,7 @@ class Register extends Component {
         
     }
 
-    register (email, pass, userName, miniBio, fotoDePerfil){
+    register (email, userName, miniBio, fotoDePerfil, pass){
         auth.createUserWithEmailAndPassword(email, pass)
             .then( response => {
                 //Cuando firebase responde sin error
@@ -105,7 +105,7 @@ class Register extends Component {
                         />
                     
 
-                        <TouchableOpacity style={styles.button} onPress={()=>this.register(this.state.email, this.state.password, this.state.miniBio, this.state.fotoDePerfil,this.state.userName)}>
+                        <TouchableOpacity style={styles.button} onPress={()=>this.register(this.state.email, this.state.userName, this.state.miniBio, this.state.fotoDePerfil, this.state.password)}>
                             <Text style={styles.textButton}>Registrarse</Text>    
                         </TouchableOpacity>
                     

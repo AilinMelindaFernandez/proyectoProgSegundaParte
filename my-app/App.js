@@ -11,6 +11,7 @@ import Register from './src/screens/Register/Register';
 import Login from './src/screens/Login/Login';
 import Home from './src/screens/Home/Home.js';
 import Menu from './src/components/Menu/Menu';
+
 const Stack = createNativeStackNavigator();
 
 
