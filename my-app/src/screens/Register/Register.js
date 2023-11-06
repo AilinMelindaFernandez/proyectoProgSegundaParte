@@ -1,8 +1,8 @@
 import react, { Component } from 'react';
-import { auth } from '../../firebase/config';
+import { db,auth } from '../../firebase/config';
 import {TextInput, TouchableOpacity, View, Text, StyleSheet,ImageBackground} from 'react-native';
 
-const imagen="../imgen.png";
+//const imagen="../imgen.png";
 
 class Register extends Component {
     constructor(){
@@ -10,7 +10,9 @@ class Register extends Component {
         this.state={
             email:'',
             userName:'',
-            password:''
+            password:'',
+            miniBio:'',
+            fotoDePerfil:''
         }
     }
     componentDidMount(){
@@ -27,13 +29,24 @@ class Register extends Component {
         
     }
 
-    register (email, pass, userName){
+    register (email, pass, userName, miniBio, fotoDePerfil){
         auth.createUserWithEmailAndPassword(email, pass)
             .then( response => {
                 //Cuando firebase responde sin error
                 console.log('Registrado ok', response);
 
                  //Cambiar los estados a vacío como están al inicio.
+
+                 //Crear la colección Users
+                db.collection('users').add({
+                    owner: auth.currentUser.email,
+                    userName: userName,
+                    miniBio: miniBio,
+                    fotoDePerfil:fotoDePerfil,
+                    createdAt: Date.now(), 
+                })
+                .then( res => console.log(res))
+
 
             })
             .catch( error => {
@@ -70,6 +83,20 @@ class Register extends Component {
                             />
                         <TextInput
                             style={styles.input}
+                            onChangeText={(text)=>this.setState({miniBio: text})}
+                            placeholder='Mini Bio'
+                            keyboardType='default'
+                            value={this.state.miniBio}
+                            />
+                        <TextInput
+                            style={styles.input}
+                            onChangeText={(text)=>this.setState({fotoDePerfil: text})}
+                            placeholder='Foto de Perfil'
+                            keyboardType='default'
+                            value={this.state.fotoDePerfil}
+                            />    
+                        <TextInput
+                            style={styles.input}
                             onChangeText={(text)=>this.setState({password: text})}
                             placeholder='Password'
                             keyboardType='default'
@@ -78,7 +105,7 @@ class Register extends Component {
                         />
                     
 
-                        <TouchableOpacity style={styles.button} onPress={()=>this.register(this.state.email, this.state.password)}>
+                        <TouchableOpacity style={styles.button} onPress={()=>this.register(this.state.email, this.state.password, this.state.miniBio, this.state.fotoDePerfil,this.state.userName)}>
                             <Text style={styles.textButton}>Registrarse</Text>    
                         </TouchableOpacity>
                     
@@ -98,7 +125,7 @@ class Register extends Component {
 
 const styles = StyleSheet.create({
     fondo:{
-        flex:6
+        
     },
     Container:{
         flex:6,
