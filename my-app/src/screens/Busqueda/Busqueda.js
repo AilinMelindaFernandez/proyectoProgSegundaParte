@@ -1,7 +1,6 @@
 import react, { Component } from 'react';
 import {TextInput, TouchableOpacity, View, Text, StyleSheet, FlatList} from 'react-native';
 import { db,auth } from '../../firebase/config';
-import Search from '../../components/Search/Search';
 
 class Busqueda extends Component {
     constructor(){
