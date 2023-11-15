@@ -7,12 +7,17 @@ class Busqueda extends Component {
         super()
         this.state={
             inputBusqueda:'',
-            resultado:[]
+            resultado:[],
+            hayOno: true
         }
         
     }
-    busqueda(inputBusqueda){
-        db.collection('users').where('userName','==',inputBusqueda).onSnapshot(
+    busqueda(input){
+        console.log(input);
+        this.setState({inputBusqueda: input})
+        
+     
+        db.collection('users').where('userName','==',input).onSnapshot(
             docs =>{
                 let users =[];
                 docs.forEach(doc => {
@@ -23,11 +28,23 @@ class Busqueda extends Component {
                 })
                 this.setState({
                     resultado:users
+                    
                 })
-            }  
+                
+            }
+           
         )
+        
+        if(this.state.resultado.length == 0){
+            this.setState({hayOno:false})
+        }
+        if(input == ""){
+            this.setState({hayOno:true})
+            console.log("probando input"+input)
+        }
+        
     }
-
+    
    
     render(){
         console.log(this.state.resultado)
@@ -37,28 +54,26 @@ class Busqueda extends Component {
                     <Text>BUSQUEDA</Text>
                     <TextInput
                         style={styles.input}
-                        onChangeText={(text)=>this.setState({inputBusqueda: text})}
+                        onChangeText={(text)=>this.busqueda(text)}
                         placeholder='Buscar'
                         keyboardType='default'
                         value={this.state.inputBusqueda}
                     />
-                    <TouchableOpacity style={styles.button} onPress={()=>this.busqueda(this.state.inputBusqueda)}>
-                        <Text style={styles.textButton}>buscar</Text>    
-                    </TouchableOpacity>
+                    
                     
                 </View>
                 <View>
-                    <Text>Lista</Text>
-                    {
-                        this.state.resultado.length === 0 ?
-                           <Text>cargando</Text>
+                    <Text>Resultados de la busqueda</Text>
+                    { 
+                        this.state.resultado.length == 0 && this.state.hayOno == false?
+                        <Text>no hay nada bue</Text>
+
                         :
                         <FlatList 
-                            data= {this.state.resultado}
-                            keyExtractor={item =>item.id.toString()}
-                            renderItem={({item}) =><Text>{item.data.userName},{item.data.owner}</Text>}
-                        />
-                    
+                           data= {this.state.resultado}
+                           keyExtractor={item =>item.id.toString()}
+                           renderItem={({item}) =><Text>{item.data.userName},{item.data.owner}</Text>}
+                       />
                     }
                     
                 </View>

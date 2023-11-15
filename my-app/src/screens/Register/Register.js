@@ -124,9 +124,6 @@ class Register extends Component {
 }
 
 const styles = StyleSheet.create({
-    fondo:{
-        
-    },
     Container:{
         flex:6,
         flexWrap: 'wrap',

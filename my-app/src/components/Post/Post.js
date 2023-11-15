@@ -8,10 +8,10 @@ class Post extends Component {
         super(props)
         this.state={
             like: false,
-            cantidadDeLikes: this.props.infoPost.datos.likes.length
+            cantidadDeLikes: this.props.infoPost.datos.likes
         }
     }
-
+    
     componentDidMount(){
         //Indicar si el post ya está likeado o no.
         if(this.props.infoPost.datos.likes.includes(auth.currentUser.email)){
