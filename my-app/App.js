@@ -11,6 +11,7 @@ import Register from './src/screens/Register/Register';
 import Login from './src/screens/Login/Login';
 import Home from './src/screens/Home/Home.js';
 import Menu from './src/components/Menu/Menu';
+import Perfil from './src/screens/Perfil/Perfil';
 
 const Stack = createNativeStackNavigator();
 
@@ -24,6 +25,7 @@ export default function App() {
         <Stack.Navigator>
           <Stack.Screen name='Registro' component={Register} options={ { headerShown: false } }/>
           <Stack.Screen name='Login' component={Login} options={ { headerShown: false } }/>
+          <Stack.Screen name='Perfil' component={Perfil} />
           <Stack.Screen name='Menu' component={Menu} options={ { headerShown: false } }/> 
         </Stack.Navigator>
 

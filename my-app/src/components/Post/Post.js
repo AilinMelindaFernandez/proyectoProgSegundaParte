@@ -6,6 +6,7 @@ import firebase from 'firebase';
 class Post extends Component {
     constructor(props){
         super(props)
+        console.log(props)
         this.state={
             like: false,
             cantidadDeLikes: this.props.infoPost.datos.likes

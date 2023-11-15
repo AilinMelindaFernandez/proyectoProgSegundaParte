@@ -1,7 +1,9 @@
 import react, { Component } from 'react';
 import {TextInput, TouchableOpacity, View, Text, StyleSheet, FlatList} from 'react-native';
 import { db,auth } from '../../firebase/config';
-
+import { TabActions } from '@react-navigation/native';
+import MiPerfil from '../../screens/MiPerfil/MiPerfil';
+import Menu from '../../components/Menu/Menu';
 class Busqueda extends Component {
     constructor(){
         super()
@@ -65,15 +67,40 @@ class Busqueda extends Component {
                 <View>
                     <Text>Resultados de la busqueda</Text>
                     { 
+                    
                         this.state.resultado.length == 0 && this.state.hayOno == false?
                         <Text>no hay nada bue</Text>
 
                         :
+                        <View>
                         <FlatList 
                            data= {this.state.resultado}
                            keyExtractor={item =>item.id.toString()}
-                           renderItem={({item}) =><Text>{item.data.userName},{item.data.owner}</Text>}
-                       />
+                           renderItem={({item}) =>
+                           
+                           <View>
+                                <Text>{item.data.userName},{item.data.owner}</Text>
+                                {
+                                    
+                                    item.data.owner == auth.currentUser.email ?
+                                    <View>
+                                        <TouchableOpacity   onPress={ () => this.props.navigation.jumpTo('Mi perfil')}>
+                                        <Text>iriiiii</Text>
+                                        </TouchableOpacity>
+                                    </View>
+                                    :
+                                    <TouchableOpacity onPress={ () => this.props.navigation.navigate('Perfil',{owner:item.data.owner})}>
+                                        <Text>ir</Text>
+                                    </TouchableOpacity>
+                                 }
+                           </View>}
+                             
+
+                           
+                             
+                         />
+                           
+                        </View>
                     }
                     
                 </View>

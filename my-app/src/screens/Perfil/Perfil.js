@@ -2,16 +2,17 @@ import react, { Component } from 'react';
 import {TextInput, TouchableOpacity, View, Text, StyleSheet,FlatList,Image} from 'react-native';
 import { db,auth } from '../../firebase/config';
 import Post from '../../components/Post/Post';
-
-class MiPerfil extends Component {
-    constructor(){
-        super()
+import Busqueda from '../Busqueda/Busqueda';
+class Perfil extends Component {
+    constructor(props){
+        super(props)
+        console.log(this.props.route.params)
         this.state={
-            usuario:auth.currentUser.email,
+            usuario:this.props.route.params.owner,
             resultado: [],
             listaPost: []
         }
-        console.log(this.state.usuario)
+        console.log(this.props)
     }
 
     componentDidMount(){
@@ -107,4 +108,4 @@ class MiPerfil extends Component {
 
 
 
-export default MiPerfil;
+export default Perfil;

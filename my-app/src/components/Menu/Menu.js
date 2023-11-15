@@ -22,6 +22,7 @@ function Menu (){
                 component={Busqueda}
                 options={{tabBarIcon:() => <FontAwesome name="search" size={24} color="black"></FontAwesome>}} 
              /> 
+           
             <Tab.Screen name='New Post'
                 component={Posts}
                 options={{tabBarIcon:() => <FontAwesome name="cloud-upload" size={24} color="black" />,  headerShown: false }}
@@ -29,7 +30,8 @@ function Menu (){
              <Tab.Screen name='Mi perfil'
                 component={MiPerfil}
                 options={{tabBarIcon:() => <Ionicons name="person" size={24} color="black" />,  headerShown: false }}
-             />                  
+             /> 
+                              
         </Tab.Navigator>
     )
 }
