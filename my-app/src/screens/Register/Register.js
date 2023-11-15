@@ -1,7 +1,7 @@
 import react, { Component } from 'react';
 import { db,auth } from '../../firebase/config';
 import {TextInput, TouchableOpacity, View, Text, StyleSheet,ImageBackground} from 'react-native';
-
+import MyCamera from '../../components/My-Camera.js/My-Camera';
 //const imagen="../imgen.png";
 
 class Register extends Component {
@@ -28,6 +28,7 @@ class Register extends Component {
         } )
         
     }
+    
 
     register (email, userName, miniBio, fotoDePerfil, pass){
         auth.createUserWithEmailAndPassword(email, pass)
@@ -55,9 +56,14 @@ class Register extends Component {
 
             })
     }
-   
+    traerUrlDeFoto(url){
+        this.setState({
+            fotoDePerfil:url
+        })
+    }
 
     render(){
+        console.log(this.state.fotoDePerfil)
         return(
             <ImageBackground  style={styles.fondo} source={{uri:"https://i.postimg.cc/8z0bSn0b/circle-scatter-haikei-2.png"}}resizeMode='cover'>
                 <View style={styles.Container}>
@@ -88,13 +94,8 @@ class Register extends Component {
                             keyboardType='default'
                             value={this.state.miniBio}
                             />
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={(text)=>this.setState({fotoDePerfil: text})}
-                            placeholder='Foto de Perfil'
-                            keyboardType='default'
-                            value={this.state.fotoDePerfil}
-                            />    
+                        <MyCamera style={styles.camara} traerUrlDeFoto = {url=>this.traerUrlDeFoto(url)} />
+                        
                         <TextInput
                             style={styles.input}
                             onChangeText={(text)=>this.setState({password: text})}

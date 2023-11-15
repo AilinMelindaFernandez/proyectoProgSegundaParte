@@ -13,7 +13,7 @@ class Home extends Component {
 
     componentDidMount(){ //apenas cargue la home, se renderiza y trae la info 
         //Traer datos
-        db.collection('posts').onSnapshot(
+        db.collection('posts').orderBy('createdAt','desc').onSnapshot(
             posteos => {
                 let postsAMostrar = [];
 

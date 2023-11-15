@@ -12,7 +12,7 @@ class Busqueda extends Component {
             resultado:[],
             hayOno: true
         }
-        
+        console.log(auth.currentUser.email)
     }
     busqueda(input){
         console.log(input);

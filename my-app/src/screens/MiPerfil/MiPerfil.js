@@ -73,6 +73,10 @@ class MiPerfil extends Component {
                                 {item.data.miniBio},
                                     
                             </Text>
+                            <Image 
+                                source={{uri:item.data.fotoDePerfil}}
+                                style={ styles.postImg }
+                            />
                         </View>
                             //falta poner la foto   
                     }
@@ -105,6 +109,12 @@ class MiPerfil extends Component {
     }
 }
 
-
-
+const styles = StyleSheet.create({
+    postImg:{
+        marginTop: 20,
+        marginBottom: 10,
+        height:300,
+        width:"100%"
+    }
+})
 export default MiPerfil;

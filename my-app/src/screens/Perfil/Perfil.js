@@ -52,11 +52,7 @@ class Perfil extends Component {
             }
         )   
     }
-    logout(){
-        auth.signOut();
-         //Redirigir al usuario a la home del sitio.
-         this.props.navigation.navigate('Login')
-    }
+   
     render(){
         console.log(this.state.usuario)
         console.log(this.state.resultado)
@@ -74,15 +70,14 @@ class Perfil extends Component {
                                 {item.data.miniBio},
                                     
                             </Text>
-                        </View>
-                            //falta poner la foto   
+                            <Image 
+                                source={{uri:item.data.fotoDePerfil}}
+                                style={ styles.postImg }
+                            />
+                        </View>  
                     }
                 />   
-                 <TouchableOpacity onPress={()=>this.logout()}>
-                    <Text>Logout</Text>
-                </TouchableOpacity>
-
-
+                 
                 <Text>Lista de Posts</Text>
                 {
                     this.state.listaPost.length === 0 
@@ -106,6 +101,14 @@ class Perfil extends Component {
     }
 }
 
+const styles = StyleSheet.create({
+    postImg:{
+        marginTop: 20,
+        marginBottom: 10,
+        height:300,
+        width:"100%"
+    }
+})
 
 
 export default Perfil;
