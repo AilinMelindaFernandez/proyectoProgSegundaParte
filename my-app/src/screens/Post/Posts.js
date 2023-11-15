@@ -1,5 +1,6 @@
-import react, { Component } from 'react';
+import React, { Component } from 'react';
 import {db, auth } from '../../firebase/config';
+import MyCamera from '../../components/My-Camera.js/My-Camera';
 import {TextInput, TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 
 class PostForm extends Component {
@@ -7,47 +8,66 @@ class PostForm extends Component {
         super()
         this.state={
            textoPost:'',
+           fotoUrl:'',
         }
     }
 
     //1)Completar la creación de posts
-    crearPost(owner, textoPost, createdAt){
+    crearPost(owner, textoPost, fotoUrl, createdAt){
         //Crear la colección Users
         db.collection('posts').add({
             owner: owner, //auth.currentUser.email,
             textoPost: textoPost, //this.state.textoPost,
+            fotoUrl:fotoUrl,
             likes:[],
             createdAt: createdAt //Date.now(), 
         })
-        .then( res => console.log(res))
+        .then( res => {
+            console.log("Creando nuevo post...");
+            //Redirigir al usuario a la home del sitio.
+            this.props.navigation.navigate('Home')
+        })
         .catch( e => console.log(e))
     }
 
-    
+    traerUrlDeFoto(url){
+        this.setState({
+            fotoUrl:url
+        })
+    }
 
     render(){
         return(
-            <View style={styles.formContainer}>
+            <View style={styles.container}>
                 <Text>New Post</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(text)=>this.setState({textoPost: text})}
-                    placeholder='Escribir...'
-                    keyboardType='default'
-                    value={this.state.textoPost}
-                    />
-                <TouchableOpacity style={styles.button} onPress={()=>this.crearPost(auth.currentUser.email, this.state.textoPost, Date.now())}>
-                    <Text style={styles.textButton}>Postear</Text>    
-                </TouchableOpacity>
+                {/* Corregir estilos para que se vea bien la cámara */}
+                <MyCamera style={styles.camara} traerUrlDeFoto = {url=>this.traerUrlDeFoto(url)} />
+                <View style={styles.form}>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={(text)=>this.setState({textoPost: text})}
+                        placeholder='Escribir...'
+                        keyboardType='default'
+                        value={this.state.textoPost}
+                        />
+                    <TouchableOpacity style={styles.button} onPress={()=>this.crearPost(auth.currentUser.email, this.state.textoPost, this.state.fotoUrl, Date.now())}>
+                        <Text style={styles.textButton}>Postear</Text>    
+                    </TouchableOpacity>
+                </View>
             </View>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    formContainer:{
-        paddingHorizontal:10,
-        marginTop: 20,
+    container:{
+        marginHorizontal: 10
+    },
+    camara:{
+        // flex:7
+    },
+    form:{
+        marginTop: 20
     },
     input:{
         height:20,
@@ -71,7 +91,7 @@ const styles = StyleSheet.create({
     },
     textButton:{
         color: '#fff'
-    }
+    },
 
 })
 
