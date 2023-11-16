@@ -7,8 +7,21 @@ class Login extends Component {
         super()
         this.state={
             email:'',
-            password:''
+            password:'',
+            textError: '',
+            logueado: false,
+            rememberMe: false
         }
+    }
+    componentDidMount() {
+        auth.onAuthStateChanged((user) => {
+            if (user) {
+                this.props.navigation.navigate('Menu')
+            }
+            this.setState({
+                logueado: true
+              })
+        })
     }
 
     login (email, pass){
@@ -28,6 +41,9 @@ class Login extends Component {
                 //Cuando Firebase responde con un error.
                 console.log(error);
             })
+    }
+    RememberMe = () => {
+        this.setState(prevState => ({ rememberMe: !prevState.rememberMe }));
     }
 
     render(){

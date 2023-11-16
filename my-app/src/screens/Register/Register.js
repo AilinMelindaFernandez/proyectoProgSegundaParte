@@ -32,7 +32,18 @@ class Register extends Component {
     
 
     register (email, userName, miniBio, fotoDePerfil, pass){
+        //errores 
+        if(this.state.email == '' || this.state.email.includes('@') == false){
+            return this.setState({textError: 'El email ingresado es inválido'})
+
+        } else if (this.state.password == '' || this.state.password.length < 6){
+            return this.setState({textError: 'La contraseña debe contener más de 6 caracteres'})
+
+        } else if (this.state.userName == '') {
+            return this.setState({textError:'Debes elegir un nombre de usuario'})
+        }
         auth.createUserWithEmailAndPassword(email, pass)
+        
             .then( response => {
                 //Cuando firebase responde sin error
                 console.log('Registrado ok', response);
@@ -59,7 +70,9 @@ class Register extends Component {
     }
     traerUrlDeFoto(url){
         this.setState({
-            fotoDePerfil:url
+            fotoDePerfil:url,
+            showCamera: false
+
         })
     }
 
