@@ -2,59 +2,55 @@ import React, { Component } from 'react';
 import {db, auth } from '../../firebase/config';
 import MyCamera from '../../components/My-Camera.js/My-Camera';
 import {TextInput, TouchableOpacity, View, Text, StyleSheet} from 'react-native';
+import firebase from 'firebase';
 
 class PostForm extends Component {
-    constructor(){
-        super()
+    constructor(props){
+        super(props)
         this.state={
-           textoPost:'',
-           fotoUrl:'',
+           comentario:'',
+           idPost:this.props.route.params.infoPost,
+           //usuario:auth.currentUser.email,
+          
         }
+        console.log(this.props.route.params)
+        console.log(this.state.idPost)
     }
 
-    //1)Completar la creación de posts
-    crearPost(owner, textoPost, fotoUrl, createdAt){
+    //1)Completar la creación de comentario
+    crearComentario(comentario){
         //Crear la colección Users
-        db.collection('posts').add({
-            owner: owner, //auth.currentUser.email,
-            textoPost: textoPost, //this.state.textoPost,
-            fotoUrl:fotoUrl,
-            likes:[],
-            createdAt: createdAt ,
-            comentarios: []
+       let  usuarioMail=auth.currentUser.email
+       let comentarioYusuario = {comentario, usuarioMail}
+        db.collection('posts').doc(this.state.idPost).update({
+            comentarios: firebase.firestore.FieldValue.arrayUnion(comentarioYusuario)
         })
         .then( res => {
-            console.log("Creando nuevo post...");
+            console.log("Creando nuevo comentario...");
             //Redirigir al usuario a la home del sitio.
             this.props.navigation.navigate('Home')
         })
         .catch( e => console.log(e))
     }
 
-    traerUrlDeFoto(url){
-        this.setState({
-            fotoUrl:url
-        })
-    }
 
     render(){
         return(
             <View style={styles.container}>
                 <Text>New Post</Text>
-                {/* Corregir estilos para que se vea bien la cámara */}
-                <MyCamera style={styles.camara} traerUrlDeFoto = {url=>this.traerUrlDeFoto(url)} />
                 <View style={styles.form}>
                     <TextInput
                         style={styles.input}
-                        onChangeText={(text)=>this.setState({textoPost: text})}
+                        onChangeText={(text)=>this.setState({comentario: text})}
                         placeholder='Escribir...'
                         keyboardType='default'
-                        value={this.state.textoPost}
+                        value={this.state.comentario}
                         />
-                    <TouchableOpacity style={styles.button} onPress={()=>this.crearPost(auth.currentUser.email, this.state.textoPost, this.state.fotoUrl, Date.now())}>
+                    <TouchableOpacity style={styles.button} onPress={()=>this.crearComentario(this.state.comentario, Date.now())}>
                         <Text style={styles.textButton}>Postear</Text>    
                     </TouchableOpacity>
                 </View>
+                
             </View>
         )
     }

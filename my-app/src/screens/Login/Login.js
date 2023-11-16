@@ -7,21 +7,8 @@ class Login extends Component {
         super()
         this.state={
             email:'',
-            password:'',
-            textError: '',
-            logueado: false,
-            rememberMe: false
+            password:''
         }
-    }
-    componentDidMount() {
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                this.props.navigation.navigate('Menu')
-            }
-            this.setState({
-                logueado: true
-              })
-        })
     }
 
     login (email, pass){

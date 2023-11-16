@@ -1,4 +1,4 @@
-import react, { Component } from 'react';
+import React, { Component } from 'react';
 import {Image, TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 import { db, auth } from '../../firebase/config';
 import firebase from 'firebase';
@@ -10,7 +10,7 @@ class Post extends Component {
         this.state={
             like: false,
             cantidadDeLikes: this.props.infoPost.datos.likes.length,
-            comments: this.props.infoPost.datos.comments.slice(0,4) // solo que muestre 4 
+            //comments: this.props.infoPost.datos.comments.slice(0,4) // solo que muestre 4 
         }
     }
 
@@ -38,8 +38,6 @@ class Post extends Component {
         })
     })
     .catch( e => console.log(e))
-
-
    }
 
    unLike(){
@@ -56,12 +54,16 @@ class Post extends Component {
     .catch( e => console.log(e))
    }
    
+   Comentar(){
+        this.props.navigation.navigate('Comentar')
+   }
 
     render(){
         console.log(this.props);
         return(
             <View style={styles.container}>
-                 <Image 
+                
+                <Image 
                     source={{uri:this.props.infoPost.datos.fotoUrl}}
                     style={ styles.postImg }
                     resizeMode="center"
@@ -69,10 +71,21 @@ class Post extends Component {
                 <Text>Texto: {this.props.infoPost.datos.textoPost}</Text>
                 <Text>Autor: {this.props.infoPost.datos.owner}</Text>
                 <Text style={styles.likeSection}>cantidad de likes: {this.state.cantidadDeLikes}</Text>
-                <TouchableOpacity onPress={() => this.props.navigate('Comments', {infoPost: this.props.infoPost, navigation: this.props.navigation})}>
-                    <Text style={styles.linkToComments}>{(this.props.infoPost.datos.comments ? this.props.infoPost.datos.comments.length : <Text>No</Text>)} comments</Text>
-                </TouchableOpacity>
-
+                {
+               // <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Comentar')}>
+                    //<Text style={styles.linkToComments}>
+                       // {
+                        //(this.props.infoPost.datos.comentarios ? 
+                           //this.props.infoPost.datos.comentarios.length 
+                            // : 
+                            //<Text>No</Text>
+                        
+                       // )
+                       //comments </Text>
+                       // } 
+                       
+                //</TouchableOpacity>
+                    }
                 <View>
                     {/* If ternario */}
                     {this.state.like ? 
@@ -100,6 +113,7 @@ class Post extends Component {
                     
                     
                     }
+      
                 </View>    
                 
             </View>

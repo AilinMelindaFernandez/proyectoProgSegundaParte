@@ -57,11 +57,24 @@ class Home extends Component {
                     ?
                     <Text>Cargando...</Text>
                     :
-                    <FlatList 
-                        data= {this.state.listaPost}
-                        keyExtractor={ unPost => unPost.id }
-                        renderItem={ ({item}) => <Post infoPost = { item } /> }
-                    />
+                    
+                        <FlatList 
+                            data= {this.state.listaPost}
+                            keyExtractor={ unPost => unPost.id }
+                            renderItem={ ({item}) => 
+
+                            <View>
+                                <Post infoPost = { item } />
+
+                                <TouchableOpacity  onPress={()=>this.props.navigation.navigate('Comentar',{infoPost:item.id})}>
+                                    <Text>COMENTA</Text>
+                                </TouchableOpacity>
+                            </View>
+                        
+                        
+                            }
+                        />
+                        
                 }
                 
             </View>
