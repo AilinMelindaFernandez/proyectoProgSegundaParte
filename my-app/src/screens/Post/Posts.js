@@ -20,7 +20,8 @@ class PostForm extends Component {
             textoPost: textoPost, //this.state.textoPost,
             fotoUrl:fotoUrl,
             likes:[],
-            createdAt: createdAt //Date.now(), 
+            createdAt: createdAt ,
+            comments: []
         })
         .then( res => {
             console.log("Creando nuevo post...");

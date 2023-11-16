@@ -9,7 +9,8 @@ class Post extends Component {
         console.log(props)
         this.state={
             like: false,
-            cantidadDeLikes: this.props.infoPost.datos.likes.length
+            cantidadDeLikes: this.props.infoPost.datos.likes.length,
+            comments: this.props.infoPost.datos.comments.slice(0,4) // solo que muestre 4 
         }
     }
 
@@ -24,7 +25,7 @@ class Post extends Component {
 
 
    likear(){
-    //El post tendría que guardar una propiedad like con un array de los usuario que lo likearon.
+    
 
     //update en base de datos
     db.collection('posts').doc(this.props.infoPost.id).update({
@@ -63,10 +64,14 @@ class Post extends Component {
                  <Image 
                     source={{uri:this.props.infoPost.datos.fotoUrl}}
                     style={ styles.postImg }
+                    resizeMode="center"
                 />
                 <Text>Texto: {this.props.infoPost.datos.textoPost}</Text>
                 <Text>Autor: {this.props.infoPost.datos.owner}</Text>
                 <Text style={styles.likeSection}>cantidad de likes: {this.state.cantidadDeLikes}</Text>
+                <TouchableOpacity onPress={() => this.props.navigate('Comments', {infoPost: this.props.infoPost, navigation: this.props.navigation})}>
+                    <Text style={styles.linkToComments}>{(this.props.infoPost.datos.comments ? this.props.infoPost.datos.comments.length : <Text>No</Text>)} comments</Text>
+                </TouchableOpacity>
 
                 <View>
                     {/* If ternario */}
@@ -78,6 +83,22 @@ class Post extends Component {
                     <TouchableOpacity style={styles.likeButton } onPress={()=>this.likear()}>
                         <Text style={styles.likeButtonText}>Like</Text>
                     </TouchableOpacity>
+                    // esta parte me da error proqu tenemos que cambiar la parte de this props. creoooo!!
+                    
+
+
+                    // {this.props.infoPost.datos.comments && this.props.infoPost.datos.comments.length > 0 ?
+                    // <FlatList
+                    //     data={this.state.comments}
+                    //     keyExtractor={key => key.text + key.user}
+                    //     renderItem={(comment) => <View  style={styles.unPostContainer}><TouchableOpacity onPress={() => this.props.navigation.navigate('OtherProfile', { userData: comment.item.userEmail, navigation: this.props.navigation})}
+                    //     initialNumToRender={4}>
+                    //     <Text style={styles.commenterEmail}>{comment.item.userEmail}:</Text>
+                    // </TouchableOpacity>
+                    // <Text>{comment.item.text}</Text></View>}
+                    // /> : null}
+                    
+                    
                     }
                 </View>    
                 
