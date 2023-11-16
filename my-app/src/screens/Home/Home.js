@@ -9,6 +9,7 @@ class Home extends Component {
         this.state={
             listaPost: []
         }
+        console.log(auth.currentUser.email)
     }
 
     componentDidMount(){ //apenas cargue la home, se renderiza y trae la info 
@@ -37,19 +38,18 @@ class Home extends Component {
     logout(){
         auth.signOut();
          //Redirigir al usuario a la home del sitio.
-        // this.props.navigation.navigate('Login')
+         this.props.navigation.navigate('Login')
     }
 
 
 
     render(){
         console.log(this.state);
+        console.log(auth.currentUser.email)
         return(
             <View>
                 <Text>HOME</Text>
-                <TouchableOpacity onPress={()=>this.logout()}>
-                    <Text>Logout</Text>
-                </TouchableOpacity>
+                
 
                 <Text>Lista de Posts</Text>
                 {

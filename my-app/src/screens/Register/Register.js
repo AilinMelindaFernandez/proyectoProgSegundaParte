@@ -23,6 +23,7 @@ class Register extends Component {
             if( user ){
                 //Redirigir al usuario a la home del sitio.
                 this.props.navigation.navigate('Menu')
+                
             }
 
         } )

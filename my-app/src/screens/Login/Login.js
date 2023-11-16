@@ -21,7 +21,7 @@ class Login extends Component {
 
 
                 //Redirigir al usuario a la home del sitio.
-                this.props.navigation.navigate('Menu')
+                this.props.navigation.navigate('Home')
 
             })
             .catch( error => {
@@ -52,7 +52,7 @@ class Login extends Component {
                 <TouchableOpacity style={styles.button} onPress={()=>this.login(this.state.email, this.state.password)}>
                     <Text style={styles.textButton}>Ingresar</Text>    
                 </TouchableOpacity>
-                <TouchableOpacity onPress={ () => this.props.navigation.navigate('Registro')}>
+                <TouchableOpacity onPress={ () => navigation.navigate('Registro')}>
                    <Text>No tengo cuenta. Registrarme.</Text>
                 </TouchableOpacity>
             </View>

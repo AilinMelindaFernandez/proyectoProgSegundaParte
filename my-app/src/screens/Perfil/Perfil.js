@@ -66,14 +66,23 @@ class Perfil extends Component {
                         <View>
                              <Text>
                                 {item.data.userName}, 
-                                {item.data.owner},
-                                {item.data.miniBio},
-                                    
+                                {item.data.owner}     
                             </Text>
-                            <Image 
-                                source={{uri:item.data.fotoDePerfil}}
-                                style={ styles.postImg }
-                            />
+                            {
+                                item.data.miniBio != "" ?
+                                <Text>{item.data.miniBio}</Text>
+                                :
+                                <Text>no tiene bio</Text>
+                            } 
+                            {
+                                item.data.fotoDePerfil != "" ?
+                                    <Image 
+                                    source={{uri:item.data.fotoDePerfil}}
+                                    style={ styles.postImg }
+                                    />
+                                :
+                                <Text>no tiene foto</Text>
+                            }
                         </View>  
                     }
                 />   

@@ -1,6 +1,6 @@
 import react, { Component } from 'react';
 import {TextInput, TouchableOpacity, View, Text, StyleSheet,FlatList,Image} from 'react-native';
-import { db,auth } from '../../firebase/config';
+import { db,auth,firebase } from '../../firebase/config';
 import Post from '../../components/Post/Post';
 
 class MiPerfil extends Component {
@@ -25,7 +25,8 @@ class MiPerfil extends Component {
                     })
                 })
                 this.setState({
-                    resultado:users
+                    resultado:users,
+                    usuario:auth.currentUser.email
                 })
                 
             }
@@ -51,17 +52,35 @@ class MiPerfil extends Component {
             }
         )   
     }
+
+    borrarPost(IdPostParaBorrar){
+        db.collection('posts').doc(IdPostParaBorrar).delete().then(() => {
+            console.log("Document successfully deleted!");
+        }).catch((error) => {
+            console.error("Error removing document: ", error);
+        });
+
+    }
+
+
     logout(){
         auth.signOut();
          //Redirigir al usuario a la home del sitio.
          this.props.navigation.navigate('Login')
+         console.log("se deslogueo")
     }
+
+
     render(){
         console.log(this.state.usuario)
         console.log(this.state.resultado)
         return(
             <View>
                 <Text>perfil</Text>
+                <TouchableOpacity onPress={()=>this.logout()}>
+                    <Text>Logout</Text>
+                </TouchableOpacity>
+
                 <FlatList 
                     data= {this.state.resultado}
                     keyExtractor={item =>item.id.toString()}
@@ -69,22 +88,29 @@ class MiPerfil extends Component {
                         <View>
                              <Text>
                                 {item.data.userName}, 
-                                {item.data.owner},
-                                {item.data.miniBio},
-                                    
+                                {item.data.owner}     
                             </Text>
-                            <Image 
+                            {
+                                item.data.miniBio != "" ?
+                                <Text>{item.data.miniBio}</Text>
+                                :
+                                <Text>no tiene bio</Text>
+                            } 
+                            {
+                                item.data.fotoDePerfil != "" ?
+                                <Image 
                                 source={{uri:item.data.fotoDePerfil}}
                                 style={ styles.postImg }
-                            />
+                                />
+                                :
+                                <Text>no tiene foto</Text>
+                            }
+                           
                         </View>
-                            //falta poner la foto   
+                             
                     }
                 />   
-                 <TouchableOpacity onPress={()=>this.logout()}>
-                    <Text>Logout</Text>
-                </TouchableOpacity>
-
+                
 
                 <Text>Lista de Posts</Text>
                 {
@@ -97,7 +123,18 @@ class MiPerfil extends Component {
                     <FlatList 
                         data= {this.state.listaPost}
                         keyExtractor={ unPost => unPost.id }
-                        renderItem={ ({item}) => <Post infoPost = { item } /> }
+                        renderItem={ ({item}) => 
+                        <View>
+                        <Post infoPost = { item } 
+                        />
+{
+    console.log(item.data)
+}
+                        <TouchableOpacity style={styles.likeButton} onPress={()=>this.borrarPost(item.id)}>
+                        <Text style={styles.likeButtonText}>borrar</Text>
+                        </TouchableOpacity>
+                        </View>
+                    }
                     />
                    </View> 
                 }
