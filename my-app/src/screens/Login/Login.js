@@ -1,4 +1,4 @@
-import react, { Component } from 'react';
+import React, { Component } from 'react';
 import { auth } from '../../firebase/config';
 import {TextInput, TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 
@@ -21,9 +21,13 @@ class Login extends Component {
         })
     }
 
-    login(email, password) {
-        auth.signInWithEmailAndPassword(email, password)
-            .then(resp => this.props.navigation.navigate('Menu'))
+    login(email, pass) {
+        auth.signInWithEmailAndPassword(email, pass)
+            .then(resp => {
+                console.log('Login ok', response);
+
+                this.props.navigation.navigate('Menu')
+            })
             .catch(err => this.setState({ error: err.message }))
     }
 
@@ -56,7 +60,8 @@ class Login extends Component {
                             <TouchableOpacity onPress={() => this.login(this.state.email, this.state.password)} style={styles.boton}>
                             <Text style={styles.ingresar}>Ingresar</Text>
                             </TouchableOpacity> 
-                            : 'Complete todos los campos'
+                            : 
+                            <Text>Complete todos los campos</Text>
                             
                         }
                         
@@ -65,7 +70,7 @@ class Login extends Component {
                     
                     <View>
                         <Text>¿No tienes una cuenta?</Text>
-                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Register')}>
+                        <TouchableOpacity onPress={ () => this.props.navigation.navigate('Registro')}>
                             <Text>Registrate</Text>
                         </TouchableOpacity>
                     </View>
