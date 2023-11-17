@@ -3,140 +3,124 @@ import { db,auth } from '../../firebase/config';
 import {TextInput, TouchableOpacity, View, Text, StyleSheet,ImageBackground} from 'react-native';
 import MyCamera from '../../components/My-Camera.js/My-Camera';
 //const imagen="../imgen.png";
-
 class Register extends Component {
-    constructor(){
+    constructor() {
         super()
-        this.state={
-            email:'',
-            userName:'',
-            miniBio:'',
-            fotoDePerfil:'',
-            password:'',
+        this.state = {
+            email: '',
+            password: '',
+            userName: '',
+            miniBio: '',
+            error: '',
+            photo: '',
+            showCamera: false,
         }
     }
-    componentDidMount(){
-        console.log("Chequear si el usuario está loguado en firebase.");
 
-        auth.onAuthStateChanged( user => {
-            console.log(user)
-            if( user ){
-                //Redirigir al usuario a la home del sitio.
-                this.props.navigation.navigate('Menu')
-                
-            }
-
-        } )
+    registerUser(email, password) {
         
-    }
-    
-
-    register (email, userName, miniBio, fotoDePerfil, pass){
-        //errores 
-        if(this.state.email == '' || this.state.email.includes('@') == false){
-            return this.setState({textError: 'El email ingresado es inválido'})
-
-        } else if (this.state.password == '' || this.state.password.length < 6){
-            return this.setState({textError: 'La contraseña debe contener más de 6 caracteres'})
-
-        } else if (this.state.userName == '') {
-            return this.setState({textError:'Debes elegir un nombre de usuario'})
-        }
-        auth.createUserWithEmailAndPassword(email, pass)
-        
-            .then( response => {
-                //Cuando firebase responde sin error
-                console.log('Registrado ok', response);
-
-                 //Cambiar los estados a vacío como están al inicio.
-
-                 //Crear la colección Users
-                db.collection('users').add({
+        auth.createUserWithEmailAndPassword(email, password)
+            .then(() => {
+                db.collection('users').add ({
                     owner: auth.currentUser.email,
-                    userName: userName,
-                    miniBio: miniBio,
-                    fotoDePerfil:fotoDePerfil,
-                    createdAt: Date.now(), 
-                })
-                .then( res => console.log(res))
+                    userName: this.state.userName,
+                    miniBio: this.state.miniBio,
+                    photo: this.state.photo
+                    
+                }).then(() => this.props.navigation.navigate('Login'))
+            })     
 
+            .catch (err => this.setState({error: err.message}))
+          
 
-            })
-            .catch( error => {
-                //Cuando Firebase responde con un error
-                console.log(error);
-
-            })
     }
-    traerUrlDeFoto(url){
+    onImageUpload(url) {
         this.setState({
-            fotoDePerfil:url,
-            showCamera: false
-
+            photo: url,
+            showCamera: false,
         })
     }
 
-    render(){
-        console.log(this.state.fotoDePerfil)
-        return(
-            <ImageBackground  style={styles.fondo} source={{uri:"https://i.postimg.cc/8z0bSn0b/circle-scatter-haikei-2.png"}}resizeMode='cover'>
-                <View style={styles.Container}>
-                    
-                    <View style={styles.titulo}>
-                        <Text style={styles.Registrarse}>Sing Up</Text>
+    render() {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.text}>Registrate</Text>
+                <View style={styles.container2}>
+
+                    <TextInput
+                        style={styles.input}
+                        placeholder='email'
+                        keyboardType='email-address'
+                        onChangeText={text => this.setState({ email: text, error: '' })}
+                        value={this.state.email}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder='contraseña'
+                        keyboardType='default'
+                        onChangeText={text => this.setState({ password: text, error: '' })}
+                        value={this.state.password}
+                        secureTextEntry={true}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder='usuario'
+                        keyboardType='default'
+                        onChangeText={text => this.setState({ userName: text, error: '' })}
+                        value={this.state.userName}
+                    />
+                    <TextInput
+                        style={styles.input}
+                        placeholder='Mini biografía'
+                        keyboardType='default'
+                        onChangeText={text => this.setState({ miniBio: text, error: '' })}
+                        value={this.state.miniBio}
+                    />
+
+
+                    {
+                        this.state.showCamera ?
+                            <View style={styles.foto}>
+                                <MyCamera onImageUpload={url => this.onImageUpload(url)} />
+                            </View>
+                            :
+                            <TouchableOpacity onPress={() => this.setState({ showCamera: true })}>
+                                <Text>Foto de perfil</Text>
+                            </TouchableOpacity>
+                    }
+
+
+                    <View>
+                        {
+                            this.state.email.length > 0 && this.state.password.length > 0 && this.state.miniBio.length > 0 ?
+                                <TouchableOpacity onPress={() => this.registerUser(this.state.email, this.state.password, this.state.userName, this.state.photo, this.state.miniBio)} style={styles.boton}>
+                                    <Text style={styles.texto}>Registra tu usuario</Text>
+                                </TouchableOpacity>
+                                : 'Complete todos los campos'
+                        }
                     </View>
 
-                    <View style={styles.formulario}>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={(text)=>this.setState({email: text})}
-                            placeholder='Email'
-                            keyboardType='email-address'
-                            value={this.state.email}
-                            />
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={(text)=>this.setState({userName: text})}
-                            placeholder='User Name'
-                            keyboardType='default'
-                            value={this.state.userName}
-                            />
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={(text)=>this.setState({miniBio: text})}
-                            placeholder='Mini Bio'
-                            keyboardType='default'
-                            value={this.state.miniBio}
-                            />
-                        <MyCamera style={styles.camara} traerUrlDeFoto = {url=>this.traerUrlDeFoto(url)} />
-                        
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={(text)=>this.setState({password: text})}
-                            placeholder='Password'
-                            keyboardType='default'
-                            secureTextEntry={true}
-                            value={this.state.password}
-                        />
-                    
-
-                        <TouchableOpacity style={styles.button} onPress={()=>this.register(this.state.email, this.state.userName, this.state.miniBio, this.state.fotoDePerfil, this.state.password)}>
-                            <Text style={styles.textButton}>Registrarse</Text>    
-                        </TouchableOpacity>
-                    
-                        <TouchableOpacity style={styles.login} onPress={ () => this.props.navigation.navigate('Login')}>
-                            <Text style={styles.loginText}>
-                                Ya tengo un cuenta. 
-                                <Text style={styles.loginTextNegrita}>Ir al login</Text>
-                            </Text>
+                    <View>
+                        <Text>¿Ya estas registrado?</Text>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Login')}>
+                            <Text>Inicia sesión</Text>
                         </TouchableOpacity>
                     </View>
+                    {
+                        this.state.error !== '' ?
+                            <Text>{this.state.error}</Text> : ''
+                    }
                 </View>
-            </ImageBackground>
-
+            </View>
         )
     }
 }
+
+
+
+
+
+
 
 const styles = StyleSheet.create({
     Container:{
