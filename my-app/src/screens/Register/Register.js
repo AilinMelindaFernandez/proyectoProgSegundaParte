@@ -118,7 +118,7 @@ class Register extends Component {
 
 
 
-export default Register
+
 
 
 
@@ -190,4 +190,4 @@ const styles = StyleSheet.create({
 })
 
 
-// export default Register;
+export default Register;

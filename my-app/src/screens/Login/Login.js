@@ -16,14 +16,14 @@ class Login extends Component {
     componentDidMount(){
         auth.onAuthStateChanged(user => {
             if(user !== null){
-                this.props.navigation.navigate('TabNavigation')
+                this.props.navigation.navigate('Menu')
             }
         })
     }
 
     login(email, password) {
         auth.signInWithEmailAndPassword(email, password)
-            .then(resp => this.props.navigation.navigate('TabNavigation'))
+            .then(resp => this.props.navigation.navigate('Menu'))
             .catch(err => this.setState({ error: err.message }))
     }
 
