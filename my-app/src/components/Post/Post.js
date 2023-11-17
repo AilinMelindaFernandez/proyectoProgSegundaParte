@@ -72,7 +72,10 @@ class Post extends Component {
                     resizeMode="center"
                 />
                 <Text>Texto: {this.props.infoPost.datos.textoPost}</Text>
-                <Text>Autor: {this.props.infoPost.datos.owner}</Text>
+                
+                <TouchableOpacity onPress={ () => this.props.navigation.navigate('Perfil')}>
+                    <Text>Autor: {this.props.infoPost.datos.owner}</Text>
+                </TouchableOpacity>
                 <Text style={styles.likeSection}>cantidad de likes: {this.state.cantidadDeLikes}</Text>
                 
                 {
