@@ -2,62 +2,80 @@ import react, { Component } from 'react';
 import { auth } from '../../firebase/config';
 import {TextInput, TouchableOpacity, View, Text, StyleSheet} from 'react-native';
 
+
 class Login extends Component {
-    constructor(){
+
+    constructor() {
         super()
-        this.state={
-            email:'',
-            password:''
+        this.state = {
+            email: '',
+            password: '',
         }
     }
 
-    login (email, pass){
-        auth.signInWithEmailAndPassword(email, pass)
-            .then( response => {
-                //Cuando firebase responde sin error
-                console.log('Login ok', response);
-
-                //Cambiar los estados a vacío como están al inicio.
-
-
-                //Redirigir al usuario a la home del sitio.
-                this.props.navigation.navigate('Home')
-
-            })
-            .catch( error => {
-                //Cuando Firebase responde con un error.
-                console.log(error);
-            })
-    }
-    RememberMe = () => {
-        this.setState(prevState => ({ rememberMe: !prevState.rememberMe }));
+    componentDidMount(){
+        auth.onAuthStateChanged(user => {
+            if(user !== null){
+                this.props.navigation.navigate('TabNavigation')
+            }
+        })
     }
 
-    render(){
-        return(
-            <View style={styles.formContainer}>
-                <Text>Login</Text>
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(text)=>this.setState({email: text})}
-                    placeholder='email'
-                    keyboardType='email-address'
-                    value={this.state.email}
+    login(email, password) {
+        auth.signInWithEmailAndPassword(email, password)
+            .then(resp => this.props.navigation.navigate('TabNavigation'))
+            .catch(err => this.setState({ error: err.message }))
+    }
+
+    render() {
+        return (
+            <View style={styles.container}>
+                <Text style={styles.text}>Iniciar sesion</Text>
+                <View style={styles.container2}>
+                    <TextInput
+                        style={styles.input}
+                        keyboardType='email-address'
+                        onChangeText={text => this.setState({ email: text })}
+                        placeholder='Email'
+                        value={this.state.email}
                     />
-                <TextInput
-                    style={styles.input}
-                    onChangeText={(text)=>this.setState({password: text})}
-                    placeholder='password'
-                    keyboardType='default'
-                    secureTextEntry={true}
-                    value={this.state.password}
-                />
-                <TouchableOpacity style={styles.button} onPress={()=>this.login(this.state.email, this.state.password)}>
-                    <Text style={styles.textButton}>Ingresar</Text>    
-                </TouchableOpacity>
-                <TouchableOpacity onPress={ () => this.props.navigation.navigate('Registro')}>
-                   <Text>No tengo cuenta. Registrarme.</Text>
-                </TouchableOpacity>
+                    <TextInput
+                        style={styles.input}
+                        onChangeText={text => this.setState({ password: text })}
+                        placeholder='Password'
+                        secureTextEntry={true}
+                        value={this.state.password}
+                    />
+
+                    
+
+                    
+                    <View>
+                        {
+                            this.state.email.length > 0 && this.state.password.length>0?
+                            <TouchableOpacity onPress={() => this.login(this.state.email, this.state.password)} style={styles.boton}>
+                            <Text style={styles.ingresar}>Ingresar</Text>
+                            </TouchableOpacity> 
+                            : 'Complete todos los campos'
+                            
+                        }
+                        
+
+                    </View>
+                    
+                    <View>
+                        <Text>¿No tienes una cuenta?</Text>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('Register')}>
+                            <Text>Registrate</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    {
+                        this.state.error !== '' ?
+                            <Text>{this.state.error}</Text> :
+                            ''
+                    }
+                </View>
             </View>
         )
     }
