@@ -1,43 +1,64 @@
 import React, { Component } from 'react';
 import {db, auth } from '../../firebase/config';
 import MyCamera from '../../components/My-Camera.js/My-Camera';
-import {TextInput, TouchableOpacity, View, Text, StyleSheet} from 'react-native';
+import {TextInput, TouchableOpacity, View, Text, StyleSheet, FlatList} from 'react-native';
 import firebase from 'firebase';
 
 class PostForm extends Component {
     constructor(props){
         super(props)
+        console.log(this.props.route.params)
         this.state={
            comentario:'',
            idPost:this.props.route.params.infoPost,
            //usuario:auth.currentUser.email,
-          
+
+            listaComentarios2:[]
         }
         console.log(this.props.route.params)
         console.log(this.state.idPost)
+        console.log(this.state.listaComentarios2)
     }
-
+    componentDidMount(){
+        db.collection('posts').where(firebase.firestore.FieldPath.documentId(), "==", this.state.idPost).onSnapshot(
+            docs =>{
+                let comentarios =[];
+                docs.forEach(doc => {
+                    comentarios.push({
+                        id:doc.id,
+                        data:doc.data()
+                    })
+                })
+                this.setState({
+                    listaComentarios2:comentarios[0].data
+                    
+                })
+            }
+        )
+        console.log(this.state.listaComentarios2)
+    }
     //1)Completar la creación de comentario
     crearComentario(comentario){
         //Crear la colección Users
+       let createdAt= Date.now()
        let  usuarioMail=auth.currentUser.email
-       let comentarioYusuario = {comentario, usuarioMail}
+       let comentarioYusuario = {comentario, usuarioMail,createdAt}
         db.collection('posts').doc(this.state.idPost).update({
             comentarios: firebase.firestore.FieldValue.arrayUnion(comentarioYusuario)
         })
         .then( res => {
             console.log("Creando nuevo comentario...");
             //Redirigir al usuario a la home del sitio.
-            this.props.navigation.navigate('Home')
+            //this.props.navigation.navigate('Home') 
         })
         .catch( e => console.log(e))
     }
-
-
+    
     render(){
+        console.log(this.state.listaComentarios2)
         return(
             <View style={styles.container}>
-                <Text>New Post</Text>
+                <Text>Agregar comentarios</Text>
                 <View style={styles.form}>
                     <TextInput
                         style={styles.input}
@@ -47,9 +68,23 @@ class PostForm extends Component {
                         value={this.state.comentario}
                         />
                     <TouchableOpacity style={styles.button} onPress={()=>this.crearComentario(this.state.comentario, Date.now())}>
-                        <Text style={styles.textButton}>Postear</Text>    
+                        <Text style={styles.textButton}>Comentar</Text>    
                     </TouchableOpacity>
                 </View>
+                {
+                    this.state.listaComentarios2.comentarios == 0?
+                    <Text>NO HAY COMENTARIOS</Text>
+                        :
+                    <FlatList 
+                        data= {this.state.listaComentarios2.comentarios}
+                        keyExtractor={item =>item.usuarioMail.toString()}
+                        //puede ser inverted={true}
+                        renderItem={({item}) => 
+                        
+                            <Text>{item.usuarioMail}, {item.comentario} {console.log(item)}</Text>
+                        }
+                     />
+                }
                 
             </View>
         )

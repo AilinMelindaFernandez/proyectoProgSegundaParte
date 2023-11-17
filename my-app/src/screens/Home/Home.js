@@ -65,7 +65,13 @@ class Home extends Component {
 
                             <View>
                                 <Post infoPost = { item } />
+                                {
+                                    console.log(item)
+                                }
 
+                                <TouchableOpacity  onPress={()=>this.props.navigation.navigate('Comentar',{infoPost:item.id})}>
+                                    <Text>Comentarios : {item.datos.comentarios.length}</Text>
+                                </TouchableOpacity>
                                 <TouchableOpacity  onPress={()=>this.props.navigation.navigate('Comentar',{infoPost:item.id})}>
                                     <Text>COMENTA</Text>
                                 </TouchableOpacity>

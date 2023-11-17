@@ -4,8 +4,10 @@ import { db,auth,firebase } from '../../firebase/config';
 import Post from '../../components/Post/Post';
 
 class MiPerfil extends Component {
+    
     constructor(){
         super()
+        console.log(auth.currentUser.email)
         this.state={
             usuario:auth.currentUser.email,
             resultado: [],

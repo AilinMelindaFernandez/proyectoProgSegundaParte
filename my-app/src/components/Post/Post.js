@@ -11,7 +11,9 @@ class Post extends Component {
             like: false,
             cantidadDeLikes: this.props.infoPost.datos.likes.length,
             //comments: this.props.infoPost.datos.comments.slice(0,4) // solo que muestre 4 
+        
         }
+        console.log(this.props.infoPost.datos.comentarios )
     }
 
     componentDidMount(){
@@ -56,6 +58,7 @@ class Post extends Component {
    
    Comentar(){
         this.props.navigation.navigate('Comentar')
+
    }
 
     render(){
@@ -71,6 +74,7 @@ class Post extends Component {
                 <Text>Texto: {this.props.infoPost.datos.textoPost}</Text>
                 <Text>Autor: {this.props.infoPost.datos.owner}</Text>
                 <Text style={styles.likeSection}>cantidad de likes: {this.state.cantidadDeLikes}</Text>
+                
                 {
                // <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Comentar')}>
                     //<Text style={styles.linkToComments}>
@@ -115,7 +119,6 @@ class Post extends Component {
                     }
       
                 </View>    
-                
             </View>
         )
     }
