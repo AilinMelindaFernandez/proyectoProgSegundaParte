@@ -2,18 +2,25 @@ import React, { Component } from 'react';
 import { db, auth } from '../../firebase/config'
 import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
 import firebase from 'firebase';
+import MyCamera from '../../components/My-Camera.js/My-Camera';
+
 
 class EditProfile extends Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             password: '',
             newPassword: '',
             userName: '',
             miniBio: '',
+            fotoDePerfil:'',
+            showCamera: false,
             error: '',
-            message:''
+            mensajePass:'',
+            mensajeUsuario:'',
+            mensajeBio:''
         }
+    console.log(this.props)
     }
 
     reauthenticate = (password) => {
@@ -27,7 +34,7 @@ class EditProfile extends Component {
             .then(() => {
                 auth.currentUser.updatePassword(this.state.newPassword)
                     .then(() => {
-                        this.setState({ message: "Password changed" })
+                        this.setState({ mensajePass: "Password changed" })
                     })
                     .catch((e) => { console.log(e); });
             })
@@ -35,24 +42,46 @@ class EditProfile extends Component {
     }
 
 
-    editarPerfil() {
+    editarNombre() {
 
         db.collection('users')
-            .doc(this.props.route.params.id)
+            .doc(this.props.route.params.idDocumento)
             .update({
                 userName: this.state.userName,
+            })
+            .then(() => {
+                this.setState({ mensajeUsuario: "Se cambio el nombre" });//poner para que se vea con mss
+            })
+    }
+    editarBio() {
+        db.collection('users')
+            .doc(this.props.route.params.idDocumento)
+            .update({
                 miniBio: this.state.miniBio,
             })
             .then(() => {
-                this.props.navigation.navigate('Profile');
+                this.setState({ mensajeBio: "Se cambio la bio" });
             })
-
-        auth.currentUser.updatePassword(
-            this.state.password
-        ).then(() => { })
-            .catch(error => console.log(error))
-
     }
+
+
+    traerUrlDeFoto(url){
+        this.setState({
+            fotoDePerfil:url,
+            showCamera: false,
+        })
+    }
+    editarFoto(){
+        db.collection('users')
+            .doc(this.props.route.params.idDocumento)
+            .update({
+                fotoDePerfil: this.state.fotoDePerfil,
+            })
+            .then(() => {
+                this.setState({ mensajeBio: "Se cambio la foto" });
+            })
+    }
+
 
 
     render() {
@@ -77,10 +106,9 @@ class EditProfile extends Component {
                         value={this.state.newPassword}
                         style={styles.input}
                     />
-
                     <TouchableOpacity onPress={() => this.changePassword()}>
                         <Text style={styles.button}>Change password</Text>
-                        <Text>{this.state.message}</Text>
+                        <Text>{this.state.mensajePass}</Text>
                     </TouchableOpacity>
 
                     <TextInput
@@ -90,6 +118,11 @@ class EditProfile extends Component {
                         value={this.state.userName}
                         style={styles.input}
                     />
+                    <TouchableOpacity onPress={() => this.editarNombre()}>
+                        <Text style={styles.button}>Editar</Text>
+                        <Text>{this.state.mensajeUsuario}</Text>
+                    </TouchableOpacity>
+                    
                     <TextInput
                         placeholder='miniBio'
                         keyboardType='default'
@@ -97,13 +130,28 @@ class EditProfile extends Component {
                         value={this.state.miniBio}
                         style={styles.input}
                     />
-
-
-
-
-                    <TouchableOpacity onPress={() => this.editarPerfil()}>
+                    <TouchableOpacity onPress={() => this.editarBio()}>
                         <Text style={styles.button}>Editar</Text>
+                        <Text>{this.state.mensajeBio}</Text>
                     </TouchableOpacity>
+
+                    {
+                    this.state.showCamera ?
+                            <View style={styles.camara}>
+                                <MyCamera traerUrlDeFoto={url => this.traerUrlDeFoto(url)} />
+                            </View>
+                            :
+                            <View>
+                            <TouchableOpacity style={styles.input} onPress={() => (this.setState({ showCamera: true }),this.editarFoto(this.state.fotoDePerfil))}>
+                                <Text>Foto de perfil</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity style={styles.input} onPress={() => (this.editarFoto(this.state.fotoDePerfil))}>
+                            <Text>Enviar nueva foto</Text>
+                            </TouchableOpacity>
+                            </View>
+                            //<MyCamera style={styles.camara} traerUrlDeFoto = {url=>this.traerUrlDeFoto(url)} />
+                    }  
 
 
                 </View>
@@ -121,7 +169,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#1f2124',
-        height: '100%'
+        height: '100%',
         backgroundColor: 'white',
         height: '100%',
         backgroundColor: '#1f2124'

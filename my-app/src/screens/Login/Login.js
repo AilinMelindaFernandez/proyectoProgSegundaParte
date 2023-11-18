@@ -10,6 +10,8 @@ class Login extends Component {
         this.state = {
             email: '',
             password: '',
+            errorEmail:'',
+            errorPass:''
         }
     }
 
@@ -28,7 +30,21 @@ class Login extends Component {
 
                 this.props.navigation.navigate('Menu')
             })
-            .catch(err => this.setState({ error: err.message }))
+            .catch((e) => { 
+                console.log(e)
+                if (e.code == "auth/invalid-email"){
+                    this.setState({ errorEmail: "El formato del Email no es correcto"})
+                }
+                else{ this.setState({ errorEmail:""})}
+                
+                if(e.message == "{\"error\":{\"code\":400,\"message\":\"INVALID_LOGIN_CREDENTIALS\",\"errors\":[{\"message\":\"INVALID_LOGIN_CREDENTIALS\",\"domain\":\"global\",\"reason\":\"invalid\"}]}}")
+                {
+                    this.setState({ errorPass: "La contraseña no es correcta"})
+                }
+                else{ this.setState({ errorPass:""})}
+
+            });
+            //.catch(err => this.setState({ error: err.message }))
     }
     
 
@@ -48,6 +64,7 @@ class Login extends Component {
                         placeholder='Email'
                         value={this.state.email}
                     />
+                    <Text>{this.state.errorEmail}</Text>
                     <TextInput
                         style={styles.input}
                         onChangeText={text => this.setState({ password: text })}
@@ -55,6 +72,8 @@ class Login extends Component {
                         secureTextEntry={true}
                         value={this.state.password}
                     />
+                    <Text>{this.state.errorPass}</Text>
+
 
                     <View>
                         {

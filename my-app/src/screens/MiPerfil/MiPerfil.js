@@ -73,54 +73,18 @@ class MiPerfil extends Component {
          console.log("se deslogueo")
     }
 
-    cambiarPass(nuevaPass){
-        let usuario= auth.currentUser
-
-        usuario.updatePassword(nuevaPass).then(() => {
-            console.log("se cambio la contraseña")
-        }).catch((error) => {
-            console.error("Error removing document: ", error);
-        });
-    }
-    simpleAlertHandler = () => {
-        Alert.alert(
-            //title
-            'Hello',
-            //body
-            'I am two option alert. Do you want to cancel me ?',
-            [
-              { text: 'Yes', onPress: () => console.log('Yes Pressed') },
-              {
-                text: 'No',
-                onPress: () => console.log('No Pressed'),
-                style: 'cancel',
-              },
-            ],
-            { cancelable: false }
-            //clicking out side of alert will not cancel
-          );
-      };
 
     render(){
         console.log(this.state.usuario)
-        console.log(this.state.resultado)
+        console.log(this.state.resultado[0])
         return(
             <View>
                 <Text>perfil</Text>
                 <TouchableOpacity onPress={()=>this.logout()}>
                     <Text>Logout</Text>
                 </TouchableOpacity>
-
-
-                <TextInput
-                        style={styles.input}
-                        keyboardType='visible-password'
-                        onChangeText={text => this.setState({ nuevaPass: text })}
-                        placeholder='Constraseña'
-                        value={this.state.nuevaPass}
-                    />
-                <TouchableOpacity onPress={()=>this.cambiarPass(this.state.nuevaPass)}>
-                    <Text>Cambiar contraseña</Text>
+                <TouchableOpacity onPress={()=>this.props.navigation.navigate('editProfile',{idDocumento:this.state.resultado[0].id})}>
+                    <Text>EDITAR PERFIL</Text>
                 </TouchableOpacity>
 
                 <FlatList 
@@ -169,7 +133,7 @@ class MiPerfil extends Component {
                             <View>
                             <Post infoPost = { item } 
                             />
-                            <TouchableOpacity  onPress={()=>this.confirmarBorrarPost(item.id)}>
+                            <TouchableOpacity  onPress={()=>this.borrarPost(item.id)}>
                                 <Text>borrar</Text>
                             </TouchableOpacity>
                             </View>
