@@ -12,7 +12,6 @@ class PostForm extends Component {
            comentario:'',
            idPost:this.props.route.params.infoPost,
            //usuario:auth.currentUser.email,
-
             listaComentarios2:[]
         }
         console.log(this.props.route.params)
@@ -30,12 +29,11 @@ class PostForm extends Component {
                     })
                 })
                 this.setState({
-                    listaComentarios2:comentarios[0].data
+                    listaComentarios2:comentarios[0].data.comentarios
                     
                 })
             }
         )
-        console.log(this.state.listaComentarios2)
     }
     //1)Completar la creación de comentario
     crearComentario(comentario){
@@ -55,7 +53,8 @@ class PostForm extends Component {
     }
     
     render(){
-        console.log(this.state.listaComentarios2)
+        //console.log(this.state.listaComentarios2.sort((a, b) => a.createdAt - b.createdAt))
+        console.log(this.state.listaComentariosOrd)
         return(
             <View style={styles.container}>
                 <Text>Agregar comentarios</Text>
@@ -67,25 +66,31 @@ class PostForm extends Component {
                         keyboardType='default'
                         value={this.state.comentario}
                         />
-                    <TouchableOpacity style={styles.button} onPress={()=>this.crearComentario(this.state.comentario, Date.now())}>
-                        <Text style={styles.textButton}>Comentar</Text>    
-                    </TouchableOpacity>
-                </View>
-                {
-                    this.state.listaComentarios2.comentarios == 0?
-                    <Text>NO HAY COMENTARIOS</Text>
+                    {
+                        this.state.comentario.length > 0?
+                            <TouchableOpacity style={styles.button} onPress={()=>this.crearComentario(this.state.comentario, Date.now())}>
+                            <Text style={styles.textButton}>Comentar</Text>    
+                            </TouchableOpacity>
                         :
-                    <FlatList 
-                        data= {this.state.listaComentarios2.comentarios}
-                        keyExtractor={item =>item.usuarioMail.toString()}
-                        //puede ser inverted={true}
-                        renderItem={({item}) => 
-                        
-                            <Text>{item.usuarioMail}, {item.comentario} {console.log(item)}</Text>
-                        }
-                     />
-                }
-                
+                            <Text> Escriba para publicar</Text>   
+                    }
+                </View>
+                    {
+                        this.state.listaComentarios2.comentarios == 0?
+                            <Text>NO HAY COMENTARIOS</Text>
+                                :
+                            <FlatList 
+                                data= {this.state.listaComentarios2.sort((a,b) => a.createdAt - b.createdAt)}
+                                inverted={true}
+                                keyExtractor={item =>item.usuarioMail.toString()}
+                                renderItem={({item}) => 
+                                    <View>
+                                        <TouchableOpacity onPress={()=>this.props.navigation.navigate('Perfil')}>{item.usuarioMail}</TouchableOpacity> 
+                                        <Text>{item.comentario}</Text>
+                                    </View>
+                                }
+                            />
+                    } 
             </View>
         )
     }

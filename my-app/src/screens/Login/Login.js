@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { auth } from '../../firebase/config';
-import {TextInput, TouchableOpacity, View, Text, StyleSheet} from 'react-native';
+import {TextInput, TouchableOpacity, View, Text, StyleSheet,ImageBackground} from 'react-native';
 
 
 class Login extends Component {
@@ -30,12 +30,17 @@ class Login extends Component {
             })
             .catch(err => this.setState({ error: err.message }))
     }
+    
 
     render() {
         return (
-            <View style={styles.container}>
-                <Text style={styles.text}>Iniciar sesion</Text>
-                <View style={styles.container2}>
+            <ImageBackground  style={styles.fondo} source={{uri:"https://i.postimg.cc/NMNTPb1T/circle-scatter-haikei-3.png"}}resizeMode='cover'>
+            <View style={styles.Container}>
+                <View style={styles.titulo}>
+                    <Text style={styles.login}>Iniciar sesion</Text>
+                </View>
+                
+                <View style={styles.formulario}>
                     <TextInput
                         style={styles.input}
                         keyboardType='email-address'
@@ -51,27 +56,23 @@ class Login extends Component {
                         value={this.state.password}
                     />
 
-                    
-
-                    
                     <View>
                         {
                             this.state.email.length > 0 && this.state.password.length>0?
-                            <TouchableOpacity onPress={() => this.login(this.state.email, this.state.password)} style={styles.boton}>
-                            <Text style={styles.ingresar}>Ingresar</Text>
+                            <TouchableOpacity style={styles.button} onPress={() => this.login(this.state.email, this.state.password)}>
+                                <Text style={styles.textButton}>Ingresar</Text>
                             </TouchableOpacity> 
                             : 
                             <Text>Complete todos los campos</Text>
-                            
                         }
-                        
-
                     </View>
                     
                     <View>
-                        <Text>¿No tienes una cuenta?</Text>
-                        <TouchableOpacity onPress={ () => this.props.navigation.navigate('Registro')}>
-                            <Text>Registrate</Text>
+                        <TouchableOpacity style={styles.registrarse} onPress={ () => this.props.navigation.navigate('Registro')}>
+                            <Text style={styles.registrarseText}>
+                                ¿No tienes una cuenta?
+                                <Text style={styles.registrarseTextNegrita}>Registrate</Text>
+                            </Text>
                         </TouchableOpacity>
                     </View>
 
@@ -82,39 +83,80 @@ class Login extends Component {
                     }
                 </View>
             </View>
+            </ImageBackground>
         )
     }
 }
 
 const styles = StyleSheet.create({
-    formContainer:{
-        paddingHorizontal:10,
-        marginTop: 20,
+    fondo:{
+        flex:6,
+    },
+    Container:{
+        flex:6,
+        flexWrap: 'wrap',
+        paddingHorizontal:30,
+        paddingVertical:60,
+        flexDirection: "colum",
+        justifyContent:"flex-start",
+        alingItems:"center",
+    },
+    titulo:{
+        flex:1,
+    },
+    login:{
+        marginVertical:20,
+        fontSize: 60,
+        textAlign: 'center',
+        alignSelf:"center",
+        color:"#ff8fab",
+        fontWeight: 'bold',
+        fontFamily: 'tahoma',
+    },
+    formulario:{
+        flex:5,
+        marginTop:80
     },
     input:{
+        backgroundColor:"#ff8fab",
         height:20,
-        paddingVertical:15,
-        paddingHorizontal: 10,
-        borderWidth:1,
-        borderColor: '#ccc',
-        borderStyle: 'solid',
-        borderRadius: 6,
-        marginVertical:10,
+        fontSize:20,
+        color:"white",
+        paddingVertical: 35,
+        paddingHorizontal: 40,
+        borderRadius:70, 
+        /*borderBottomWidth:4,
+        borderBottomColor:"white",*/
+        marginVertical:20,
     },
     button:{
-        backgroundColor:'blue',
-        paddingHorizontal: 10,
-        paddingVertical: 6,
-        textAlign: 'center',
-        borderRadius:4, 
-        borderWidth:1,
-        borderStyle: 'solid',
-        borderColor: '#28a745'
+        backgroundColor:"#fb6f92",
+        paddingVertical: 20,
+        paddingHorizontal: 40,
+        borderRadius:70,
+        borderStyle:"solid",
+        borderWidth:4,
+        borderColor:"#F3CFCE",
+        marginTop:40,
     },
     textButton:{
-        color: '#fff'
+        textAlign:"center",
+        fontSize:20,
+        color:"white",
+        fontWeight: 'bold',
+        fontFamily: 'tahoma',
+    },
+    registrarse:{
+        marginVertical:25,
+    },
+    registrarseText:{
+        fontSize:18,
+        textAlign:"center",
+        color:"#ff8fab",
+    },
+    registrarseTextNegrita:{
+        fontWeight: 'bold',
     }
-
 })
 
 

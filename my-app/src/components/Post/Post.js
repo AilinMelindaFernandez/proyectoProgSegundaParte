@@ -71,12 +71,12 @@ class Post extends Component {
                     style={ styles.postImg }
                     resizeMode="center"
                 />
-                <Text>Texto: {this.props.infoPost.datos.textoPost}</Text>
+                <Text>Descripcion: {this.props.infoPost.datos.textoPost}</Text>
                 
                 <TouchableOpacity onPress={ () => this.props.navigation.navigate('Perfil')}>
                     <Text>Autor: {this.props.infoPost.datos.owner}</Text>
                 </TouchableOpacity>
-                <Text style={styles.likeSection}>cantidad de likes: {this.state.cantidadDeLikes}</Text>
+                
                 
                 {
                // <TouchableOpacity style={styles.button} onPress={() => this.props.navigation.navigate('Comentar')}>
@@ -93,7 +93,8 @@ class Post extends Component {
                        
                 //</TouchableOpacity>
                     }
-                <View>
+                <View style={styles.likeSection}>
+                <Text>cantidad de likes: {this.state.cantidadDeLikes}</Text>
                     {/* If ternario */}
                     {this.state.like ? 
                     <TouchableOpacity style={styles.likeButton} onPress={()=>this.unLike()}>
@@ -127,26 +128,22 @@ class Post extends Component {
     }
 }
 const styles = StyleSheet.create({
-    container:{
-        marginVertical: 10,
-        marginHorizontal:5,
-        padding: 10,
-        borderWidth: 1,
-        borderColor: "#ccc",
-        borderRadius: 6,
-    },
     likeSection:{
         marginTop: 10,
-        marginVertical: 5
+        marginVertical: 5,
+        flexWrap: 'wrap',
+        flexDirection: "row",
+        justifyContent:'space-between',
+        alingItems:"center",
     },
     likeButton:{
-        backgroundColor:'#28a745',
+        backgroundColor:'#EC698F',
         paddingHorizontal: 10,
         paddingVertical: 6,
-        borderRadius:4, 
+        borderRadius:70, 
         borderWidth:1,
         borderStyle: 'solid',
-        borderColor: '#28a745',
+        borderColor: '#F1ADB9',
         width:100
         
     },
@@ -155,10 +152,9 @@ const styles = StyleSheet.create({
         textAlign:"center"
     },
     postImg:{
-        marginTop: 20,
         marginBottom: 10,
         height:300,
-        width:"100%"
+        width:"100%",
     }
 })
 

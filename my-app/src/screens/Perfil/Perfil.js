@@ -98,7 +98,14 @@ class Perfil extends Component {
                     <FlatList 
                         data= {this.state.listaPost}
                         keyExtractor={ unPost => unPost.id }
-                        renderItem={ ({item}) => <Post infoPost = { item } /> }
+                        renderItem={ ({item}) => 
+                            <View>
+                                <Post infoPost = { item } /> 
+                                <TouchableOpacity  onPress={()=>this.props.navigation.navigate('Comentar',{infoPost:item.id})}>
+                                        <Text>Comentarios : {item.datos.comentarios.length}</Text>
+                                </TouchableOpacity>
+                            </View>
+                            }
                     />
                    </View> 
                 }

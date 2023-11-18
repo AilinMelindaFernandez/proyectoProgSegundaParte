@@ -1,5 +1,5 @@
 import react, { Component } from 'react';
-import {TextInput, TouchableOpacity, View, Text, StyleSheet, FlatList} from 'react-native';
+import {TextInput, TouchableOpacity, View, Text, StyleSheet, FlatList,Image} from 'react-native';
 import { db,auth } from '../../firebase/config';
 import { TabActions } from '@react-navigation/native';
 import MiPerfil from '../../screens/MiPerfil/MiPerfil';
@@ -51,8 +51,8 @@ class Busqueda extends Component {
     render(){
         console.log(this.state.resultado)
         return(
-            <View>
-                <View style={styles.formContainer}>
+            <View style={styles.formContainer}>
+                <View >
                     <Text>BUSQUEDA</Text>
                     <TextInput
                         style={styles.input}
@@ -79,18 +79,16 @@ class Busqueda extends Component {
                            renderItem={({item}) =>
                            
                            <View>
-                                <Text>{item.data.userName},{item.data.owner}</Text>
+                                
                                 {
                                     
                                     item.data.owner == auth.currentUser.email ?
-                                    <View>
-                                        <TouchableOpacity   onPress={ () => this.props.navigation.jumpTo('Mi perfil')}>
-                                        <Text>iriiiii</Text>
+                                        <TouchableOpacity  style={styles.containerResultado} onPress={ () => this.props.navigation.jumpTo('Mi perfil')}>
+                                            <Text>{item.data.userName},{item.data.owner}</Text>
                                         </TouchableOpacity>
-                                    </View>
                                     :
-                                    <TouchableOpacity onPress={ () => this.props.navigation.navigate('Perfil',{owner:item.data.owner})}>
-                                        <Text>ir</Text>
+                                    <TouchableOpacity style={styles.containerResultado} onPress={ () => this.props.navigation.navigate('Perfil',{owner:item.data.owner})}>
+                                        <Text style={styles.containerText}>{item.data.userName},{item.data.owner}</Text>
                                     </TouchableOpacity>
                                  }
                            </View>}
@@ -113,9 +111,10 @@ const styles = StyleSheet.create({
     formContainer:{
         paddingHorizontal:10,
         marginTop: 20,
+        
     },
     input:{
-        height:20,
+        height:30,
         paddingVertical:15,
         paddingHorizontal: 10,
         borderWidth:1,
@@ -124,20 +123,19 @@ const styles = StyleSheet.create({
         borderRadius: 6,
         marginVertical:10,
     },
-    button:{
-        backgroundColor:'blue',
+    containerResultado:{
+        height:50,
+        paddingVertical:15,
         paddingHorizontal: 10,
-        paddingVertical: 6,
-        textAlign: 'center',
-        borderRadius:4, 
-        borderWidth:1,
+        borderWidth:2,
+        borderColor: '#EC698F',
         borderStyle: 'solid',
-        borderColor: '#28a745'
+        borderRadius: 10,
+        marginVertical:10,
     },
-    textButton:{
-        color: '#fff'
-    }
-
+    containerText:{
+        backgroundColor:'pink',
+    },
 })
 
 

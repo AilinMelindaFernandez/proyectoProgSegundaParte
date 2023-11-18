@@ -1,4 +1,4 @@
-import react, { Component } from 'react';
+import React, { Component} from 'react';
 import {TextInput, TouchableOpacity, View, Text, StyleSheet,FlatList,Image} from 'react-native';
 import { db,auth,firebase } from '../../firebase/config';
 import Post from '../../components/Post/Post';
@@ -11,7 +11,8 @@ class MiPerfil extends Component {
         this.state={
             usuario:auth.currentUser.email,
             resultado: [],
-            listaPost: []
+            listaPost: [],
+            nuevaPass: '',
         }
         console.log(this.state.usuario)
     }
@@ -63,8 +64,8 @@ class MiPerfil extends Component {
         });
 
     }
-
-
+    
+   
     logout(){
         auth.signOut();
          //Redirigir al usuario a la home del sitio.
@@ -72,6 +73,33 @@ class MiPerfil extends Component {
          console.log("se deslogueo")
     }
 
+    cambiarPass(nuevaPass){
+        let usuario= auth.currentUser
+
+        usuario.updatePassword(nuevaPass).then(() => {
+            console.log("se cambio la contraseña")
+        }).catch((error) => {
+            console.error("Error removing document: ", error);
+        });
+    }
+    simpleAlertHandler = () => {
+        Alert.alert(
+            //title
+            'Hello',
+            //body
+            'I am two option alert. Do you want to cancel me ?',
+            [
+              { text: 'Yes', onPress: () => console.log('Yes Pressed') },
+              {
+                text: 'No',
+                onPress: () => console.log('No Pressed'),
+                style: 'cancel',
+              },
+            ],
+            { cancelable: false }
+            //clicking out side of alert will not cancel
+          );
+      };
 
     render(){
         console.log(this.state.usuario)
@@ -81,6 +109,18 @@ class MiPerfil extends Component {
                 <Text>perfil</Text>
                 <TouchableOpacity onPress={()=>this.logout()}>
                     <Text>Logout</Text>
+                </TouchableOpacity>
+
+
+                <TextInput
+                        style={styles.input}
+                        keyboardType='visible-password'
+                        onChangeText={text => this.setState({ nuevaPass: text })}
+                        placeholder='Constraseña'
+                        value={this.state.nuevaPass}
+                    />
+                <TouchableOpacity onPress={()=>this.cambiarPass(this.state.nuevaPass)}>
+                    <Text>Cambiar contraseña</Text>
                 </TouchableOpacity>
 
                 <FlatList 
@@ -121,28 +161,23 @@ class MiPerfil extends Component {
                     <Text>Cargando...</Text>
                     :
                     <View>
-                    <Text>cantidad de post { this.state.listaPost.length}</Text>
-                    <FlatList 
-                        data= {this.state.listaPost}
-                        keyExtractor={ unPost => unPost.id }
-                        renderItem={ ({item}) => 
-                        <View>
-                        <Post infoPost = { item } 
+                        <Text>cantidad de post { this.state.listaPost.length}</Text>
+                        <FlatList 
+                            data= {this.state.listaPost}
+                            keyExtractor={ unPost => unPost.id }
+                            renderItem={ ({item}) => 
+                            <View>
+                            <Post infoPost = { item } 
+                            />
+                            <TouchableOpacity  onPress={()=>this.confirmarBorrarPost(item.id)}>
+                                <Text>borrar</Text>
+                            </TouchableOpacity>
+                            </View>
+                            }
                         />
-{
-    console.log(item.data)
-}
-                        <TouchableOpacity style={styles.likeButton} onPress={()=>this.borrarPost(item.id)}>
-                        <Text style={styles.likeButtonText}>borrar</Text>
-                        </TouchableOpacity>
-                        </View>
-                    }
-                    />
                    </View> 
                 }
-
-
-
+            
             </View>
         )
     }
@@ -155,5 +190,8 @@ const styles = StyleSheet.create({
         height:300,
         width:"100%"
     }
+
 })
+
+
 export default MiPerfil;

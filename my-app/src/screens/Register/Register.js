@@ -70,14 +70,14 @@ class Register extends Component {
                         <TextInput
                             style={styles.input}
                             onChangeText={(text)=>this.setState({email: text,error: '' })}
-                            placeholder='Email'
+                            placeholder='Email *'
                             keyboardType='email-address'
                             value={this.state.email}
                             />
                         <TextInput
                             style={styles.input}
                             onChangeText={(text)=>this.setState({userName: text,error: '' })}
-                            placeholder='User Name'
+                            placeholder='User Name *'
                             keyboardType='default'
                             value={this.state.userName}
                             />
@@ -95,26 +95,27 @@ class Register extends Component {
                                 <MyCamera traerUrlDeFoto={url => this.traerUrlDeFoto(url)} />
                             </View>
                             :
-                            <TouchableOpacity onPress={() => this.setState({ showCamera: true })}>
+                            <TouchableOpacity style={styles.input} onPress={() => this.setState({ showCamera: true })}>
                                 <Text>Foto de perfil</Text>
                             </TouchableOpacity>
                             //<MyCamera style={styles.camara} traerUrlDeFoto = {url=>this.traerUrlDeFoto(url)} />
                          }  
-                        
-                        
                         <TextInput
                             style={styles.input}
                             onChangeText={(text)=>this.setState({password: text})}
-                            placeholder='Password'
+                            placeholder='Password *'
                             keyboardType='default'
                             secureTextEntry={true}
                             value={this.state.password}
                         />
-                    
-                        <TouchableOpacity style={styles.button} onPress={()=>this.register(this.state.email, this.state.userName, this.state.miniBio, this.state.fotoDePerfil, this.state.password)}>
-                            <Text style={styles.textButton}>Registrarse</Text>    
-                        </TouchableOpacity>
-                    
+                        {
+                            this.state.email.length > 0 && this.state.password.length>0?
+                                <TouchableOpacity style={styles.button} onPress={()=>this.register(this.state.email, this.state.userName, this.state.miniBio, this.state.fotoDePerfil, this.state.password)}>
+                                    <Text style={styles.textButton}>Registrarse</Text>    
+                                </TouchableOpacity>
+                                :
+                                <Text>Complete todos los campos</Text>
+                        }
                         <TouchableOpacity style={styles.login} onPress={ () => this.props.navigation.navigate('Login')}>
                             <Text style={styles.loginText}>
                                 Ya tengo un cuenta. 
@@ -158,7 +159,7 @@ const styles = StyleSheet.create({
         height:20,
         fontSize:20,
         color:"white",
-        paddingVertical: 40,
+        paddingVertical: 35,
         paddingHorizontal: 40,
         borderRadius:70, 
         /*borderBottomWidth:4,

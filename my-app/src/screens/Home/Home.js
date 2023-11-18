@@ -63,7 +63,7 @@ class Home extends Component {
                             keyExtractor={ unPost => unPost.id }
                             renderItem={ ({item}) => 
 
-                            <View>
+                            <View style={styles.containerPost}>
                                 <Post infoPost = { item } />
                                 {
                                     console.log(item)
@@ -71,9 +71,6 @@ class Home extends Component {
 
                                 <TouchableOpacity  onPress={()=>this.props.navigation.navigate('Comentar',{infoPost:item.id})}>
                                     <Text>Comentarios : {item.datos.comentarios.length}</Text>
-                                </TouchableOpacity>
-                                <TouchableOpacity  onPress={()=>this.props.navigation.navigate('Comentar',{infoPost:item.id})}>
-                                    <Text>COMENTA</Text>
                                 </TouchableOpacity>
                             </View>
                         
@@ -88,6 +85,15 @@ class Home extends Component {
     }
 }
 
-
+const styles = StyleSheet.create({
+    containerPost:{
+        marginVertical: 10,
+        marginHorizontal:5,
+        padding: 10,
+        borderWidth: 2,
+        borderColor: "#EC698F",
+        borderRadius: 6,
+    },
+})
 
 export default Home;
