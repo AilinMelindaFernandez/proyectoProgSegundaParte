@@ -128,6 +128,14 @@ class Post extends Component {
     }
 }
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#F5F5F5',
+        paddingTop: 100,
+        paddingBottom: 40,
+      },
     likeSection:{
         marginTop: 10,
         marginVertical: 5,
