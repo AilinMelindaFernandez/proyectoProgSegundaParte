@@ -18,7 +18,9 @@ class EditProfile extends Component {
             error: '',
             mensajePass:'',
             mensajeUsuario:'',
-            mensajeBio:''
+            mensajeBio:'',
+            passwordBorrar:''
+            
         }
     console.log(this.props)
     }
@@ -82,6 +84,24 @@ class EditProfile extends Component {
             })
     }
 
+    eliminarPerfil(){
+        const user = auth.currentUser;
+        const credential =   firebase.auth.EmailAuthProvider.credential(user.email, this.state.passwordBorrar)
+        user.reauthenticateWithCredential(credential).then(() => {
+            // User re-authenticated.
+            db.collection('users').doc(this.props.route.params.idDocumento).delete().then(() => { 
+            user.delete().then(() => {
+                // User deleted.
+                console.log("se borro")
+                this.props.navigation.navigate('Registro')
+                })
+            })
+            
+          }).catch((error) => {
+                console.log(error)
+            });
+    }
+
 
 
     render() {
@@ -90,7 +110,19 @@ class EditProfile extends Component {
                 <Text style={styles.text}>Edita tus datos</Text>
                 <View style={styles.box}>
                     <Text style={styles.alert}>{this.state.error}</Text>
+                    
 
+
+                    <TextInput
+                        placeholder="Password Actual para borrar el perfil"
+                        secureTextEntry={true}
+                        onChangeText={text => { this.setState({ passwordBorrar: text }) }}
+                        value={this.state.passwordBorrar}
+                        style={styles.input}
+                    />
+                    <TouchableOpacity style={styles.text} onPress={()=> this.eliminarPerfil()} >
+                        <Text style={styles.logout} >Borrar perfil</Text>
+                    </TouchableOpacity>
                     <TextInput
                         placeholder="Password Actual"
                         secureTextEntry={true}
@@ -135,6 +167,8 @@ class EditProfile extends Component {
                         <Text>{this.state.mensajeBio}</Text>
                     </TouchableOpacity>
 
+                   
+
                     {
                     this.state.showCamera ?
                             <View style={styles.camara}>
@@ -142,11 +176,11 @@ class EditProfile extends Component {
                             </View>
                             :
                             <View>
-                            <TouchableOpacity style={styles.input} onPress={() => (this.setState({ showCamera: true }),this.editarFoto(this.state.fotoDePerfil))}>
+                            <TouchableOpacity  onPress={() => (this.setState({ showCamera: true }))}>
                                 <Text>Foto de perfil</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.input} onPress={() => (this.editarFoto(this.state.fotoDePerfil))}>
+                            <TouchableOpacity  onPress={() => (this.editarFoto(this.state.fotoDePerfil))}>
                             <Text>Enviar nueva foto</Text>
                             </TouchableOpacity>
                             </View>

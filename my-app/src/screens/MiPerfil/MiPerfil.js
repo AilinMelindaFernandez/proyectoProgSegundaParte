@@ -12,7 +12,6 @@ class MiPerfil extends Component {
             usuario:auth.currentUser.email,
             resultado: [],
             listaPost: [],
-            nuevaPass: '',
         }
         console.log(this.state.usuario)
     }
@@ -75,6 +74,7 @@ class MiPerfil extends Component {
 
 
     render(){
+        console.log(this.state.resultado)
         console.log(this.state.usuario)
         console.log(this.state.resultado[0])
         return(
