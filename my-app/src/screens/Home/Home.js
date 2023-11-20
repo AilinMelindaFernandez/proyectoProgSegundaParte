@@ -98,9 +98,6 @@ const styles = StyleSheet.create({
     scroll:{
         backgroundColor:"white"
     },
-    fondo:{
-        borderRadius: 60,
-    },
     containerGeneral:{
         // paddingHorizontal:10,
          //marginTop: 20,

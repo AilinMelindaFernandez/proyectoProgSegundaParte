@@ -1,5 +1,5 @@
 import react, { Component } from 'react';
-import {TextInput, TouchableOpacity, View, Text, StyleSheet, FlatList,Image} from 'react-native';
+import {TextInput, TouchableOpacity, View, Text, StyleSheet, FlatList,Image,ScrollView} from 'react-native';
 import { db,auth } from '../../firebase/config';
 import { TabActions } from '@react-navigation/native';
 import MiPerfil from '../../screens/MiPerfil/MiPerfil';
@@ -50,6 +50,7 @@ class Busqueda extends Component {
     render(){
         console.log(this.state.resultado)
         return(
+            <ScrollView style={styles.scroll}>
             <View style={styles.formContainer}>
                 <View >
                     <Text style={styles.titulo}>BUSQUEDA</Text>
@@ -109,11 +110,16 @@ class Busqueda extends Component {
                     
                 </View>
             </View>
+            </ScrollView>
 
         )
     }
 }
 const styles = StyleSheet.create({
+    scroll:{
+        backgroundColor:"white"
+    },
+    
     formContainer:{
        // paddingHorizontal:10,
         //marginTop: 20,

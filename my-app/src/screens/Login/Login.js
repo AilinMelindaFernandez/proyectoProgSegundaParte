@@ -82,7 +82,7 @@ class Login extends Component {
                                 <Text style={styles.textButton}>Ingresar</Text>
                             </TouchableOpacity> 
                             : 
-                            <Text>Complete todos los campos</Text>
+                            <Text  style={styles.completar}>Complete todos los campos</Text>
                         }
                     </View>
                     
@@ -175,7 +175,18 @@ const styles = StyleSheet.create({
     },
     registrarseTextNegrita:{
         fontWeight: 'bold',
-    }
+    },
+    completar:{
+        backgroundColor:'#79D3BE',
+        paddingHorizontal: 10,
+        paddingVertical: 6,
+        textAlign: 'center',
+        borderRadius:4, 
+        color:'white',
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontFamily: 'tahoma',
+    },
 })
 
 

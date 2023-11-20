@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { db, auth } from '../../firebase/config'
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet,ScrollView } from 'react-native';
 import firebase from 'firebase';
 import MyCamera from '../../components/My-Camera.js/My-Camera';
 
@@ -106,66 +106,77 @@ class EditProfile extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <Text style={styles.text}>Edita tus datos</Text>
-                <View style={styles.box}>
+            <ScrollView style={styles.scroll}>
+            <View style={styles.Container}>
+
+                <Text style={styles.titulo}>Edita tus datos</Text>
+
+                <View style={styles.formulario}>
                     <Text style={styles.alert}>{this.state.error}</Text>
                     
 
+                    <View style={styles.cajas}>
+                        <TextInput
+                            placeholder="Password Actual para borrar el perfil"
+                            secureTextEntry={true}
+                            onChangeText={text => { this.setState({ passwordBorrar: text }) }}
+                            value={this.state.passwordBorrar}
+                            style={styles.input}
+                        />
+                        <TouchableOpacity style={styles.text} onPress={()=> this.eliminarPerfil()} >
+                            <Text style={styles.button} >Borrar perfil</Text>
+                        </TouchableOpacity>
+                    </View>
 
-                    <TextInput
-                        placeholder="Password Actual para borrar el perfil"
-                        secureTextEntry={true}
-                        onChangeText={text => { this.setState({ passwordBorrar: text }) }}
-                        value={this.state.passwordBorrar}
-                        style={styles.input}
-                    />
-                    <TouchableOpacity style={styles.text} onPress={()=> this.eliminarPerfil()} >
-                        <Text style={styles.logout} >Borrar perfil</Text>
-                    </TouchableOpacity>
-                    <TextInput
-                        placeholder="Password Actual"
-                        secureTextEntry={true}
-                        onChangeText={text => { this.setState({ password: text }) }}
-                        value={this.state.password}
-                        style={styles.input}
-                    />
+                    <View style={styles.cajas}>
+                        <TextInput
+                            placeholder="Password Actual"
+                            secureTextEntry={true}
+                            onChangeText={text => { this.setState({ password: text }) }}
+                            value={this.state.password}
+                            style={styles.input}
+                        />
 
-                    <TextInput
-                        placeholder="New password"
-                        secureTextEntry={true}
-                        onChangeText={text => { this.setState({ newPassword: text }) }}
-                        value={this.state.newPassword}
-                        style={styles.input}
-                    />
-                    <TouchableOpacity onPress={() => this.changePassword()}>
-                        <Text style={styles.button}>Change password</Text>
-                        <Text>{this.state.mensajePass}</Text>
-                    </TouchableOpacity>
+                        <TextInput
+                            placeholder="New password"
+                            secureTextEntry={true}
+                            onChangeText={text => { this.setState({ newPassword: text }) }}
+                            value={this.state.newPassword}
+                            style={styles.input}
+                        />
+                        <TouchableOpacity onPress={() => this.changePassword()}>
+                            <Text style={styles.button}>Change password</Text>
+                            <Text>{this.state.mensajePass}</Text>
+                        </TouchableOpacity>
+                    </View>
 
-                    <TextInput
-                        placeholder='username'
-                        keyboardType='default'
-                        onChangeText={text => this.setState({ userName: text })}
-                        value={this.state.userName}
-                        style={styles.input}
-                    />
-                    <TouchableOpacity onPress={() => this.editarNombre()}>
-                        <Text style={styles.button}>Editar</Text>
-                        <Text>{this.state.mensajeUsuario}</Text>
-                    </TouchableOpacity>
-                    
-                    <TextInput
-                        placeholder='miniBio'
-                        keyboardType='default'
-                        onChangeText={text => this.setState({ miniBio: text })}
-                        value={this.state.miniBio}
-                        style={styles.input}
-                    />
-                    <TouchableOpacity onPress={() => this.editarBio()}>
-                        <Text style={styles.button}>Editar</Text>
-                        <Text>{this.state.mensajeBio}</Text>
-                    </TouchableOpacity>
+                    <View style={styles.cajas}>
+                        <TextInput
+                            placeholder='username'
+                            keyboardType='default'
+                            onChangeText={text => this.setState({ userName: text })}
+                            value={this.state.userName}
+                            style={styles.input}
+                        />
+                        <TouchableOpacity onPress={() => this.editarNombre()}>
+                            <Text style={styles.button}>Editar</Text>
+                            <Text>{this.state.mensajeUsuario}</Text>
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={styles.cajas}>
+                        <TextInput
+                            placeholder='miniBio'
+                            keyboardType='default'
+                            onChangeText={text => this.setState({ miniBio: text })}
+                            value={this.state.miniBio}
+                            style={styles.input}
+                        />
+                        <TouchableOpacity onPress={() => this.editarBio()}>
+                            <Text style={styles.button}>Editar</Text>
+                            <Text>{this.state.mensajeBio}</Text>
+                        </TouchableOpacity>
+                    </View>
 
                    
 
@@ -175,14 +186,14 @@ class EditProfile extends Component {
                                 <MyCamera traerUrlDeFoto={url => this.traerUrlDeFoto(url)} />
                             </View>
                             :
-                            <View>
-                            <TouchableOpacity  onPress={() => (this.setState({ showCamera: true }))}>
-                                <Text>Foto de perfil</Text>
-                            </TouchableOpacity>
+                            <View style={styles.cajas}>
+                                <TouchableOpacity  onPress={() => (this.setState({ showCamera: true }))}>
+                                    <Text style={styles.input}>Foto de perfil</Text>
+                                </TouchableOpacity>
 
-                            <TouchableOpacity  onPress={() => (this.editarFoto(this.state.fotoDePerfil))}>
-                            <Text>Enviar nueva foto</Text>
-                            </TouchableOpacity>
+                                <TouchableOpacity  onPress={() => (this.editarFoto(this.state.fotoDePerfil))}>
+                                <Text style={styles.button}>Enviar nueva foto</Text>
+                                </TouchableOpacity>
                             </View>
                             //<MyCamera style={styles.camara} traerUrlDeFoto = {url=>this.traerUrlDeFoto(url)} />
                     }  
@@ -191,53 +202,73 @@ class EditProfile extends Component {
                 </View>
 
             </View>
+            </ScrollView>
         )
     }
 }
 
 const styles = StyleSheet.create({
-
-    container: {
-        paddingHorizontal: 10,
-        marginTop: 10,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#1f2124',
-        height: '100%',
-        backgroundColor: 'white',
-        height: '100%',
-        backgroundColor: '#1f2124'
+     scroll:{
+        backgroundColor:"white"
     },
-    box: {
-        backgroundColor: '#c7f7f7',
-        width: '80%',
-        borderRadius: '5%',
-        justifyContent: 'center',
-        alignItems: 'center',
-        margin: '8%'
+    Container:{
+        flex:6,
+        flexWrap: 'wrap',
+        paddingHorizontal:30,
+        paddingVertical:60,
+        flexDirection: "colum",
+        justifyContent:"flex-start",
+        alingItems:"center",
+    },
+    titulo:{
+        flex:1,
+        marginVertical:20,
+        fontSize: 35,
+        textAlign: 'center',
+        alignSelf:"center",
+        color:"#ff8fab",
+        fontWeight: 'bold',
+        fontFamily: 'tahoma',
     },
     input: {
-        borderRadius: 5,
-        backgroundColor: 'white',
-        width: '80%',
-        height: '5%',
-        padding: '5%',
-        margin: '8%'
+        backgroundColor:"#ff8fab",
+        height:20,
+        fontSize:15,
+        color:"white",
+        paddingVertical: 20,
+        paddingHorizontal: 40,
+        borderRadius:70, 
+        /*borderBottomWidth:4,
+        borderBottomColor:"white",*/
+        //marginVertical:20,
+        marginTop:20,
+        marginBottom:10,
     },
+   
     alert: {
         color: 'black'
     },
     button: {
-        backgroundColor: 'white',
-        borderRadius: '5%'
+        backgroundColor:'#B9EEE1',
+        paddingHorizontal: 10,
+        paddingVertical: 6,
+        textAlign: 'center',
+        borderRadius:4, 
+        borderWidth:1,
+        borderStyle: 'solid',
+        borderColor: '#79D3BE',
+
+        textAlign:"center",
+        fontFamily: 'tahoma',
+
     },
-    text: {
-        fontFamily: 'Oswald, sans-serif',
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize: 24,
-        textAlign: 'center',   
-    }
+    cajas:{
+        marginVertical:20,
+        borderColor: '#EC698F',
+        borderStyle: 'solid',
+        borderRadius: 10,
+    },
+   
 })
 
 export default EditProfile;

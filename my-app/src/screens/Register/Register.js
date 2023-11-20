@@ -1,6 +1,6 @@
 import react, { Component } from 'react';
 import { db,auth } from '../../firebase/config';
-import {TextInput, TouchableOpacity, View, Text, StyleSheet,ImageBackground} from 'react-native';
+import {TextInput, TouchableOpacity, View, Text, StyleSheet,ImageBackground,ScrollView} from 'react-native';
 import MyCamera from '../../components/My-Camera.js/My-Camera';
 //const imagen="../imgen.png";
 class Register extends Component {
@@ -60,7 +60,8 @@ class Register extends Component {
     render(){
         console.log(this.state.fotoDePerfil)
         return(
-            <ImageBackground  style={styles.fondo} source={{uri:"https://i.postimg.cc/8z0bSn0b/circle-scatter-haikei-2.png"}}resizeMode='cover'>
+            <ScrollView style={styles.scroll}>
+            <ImageBackground  style={styles.fondo} source={{uri:"https://i.postimg.cc/NMNTPb1T/circle-scatter-haikei-3.png"}}resizeMode='cover'>
                 <View style={styles.Container}>
                     
                     <View style={styles.titulo}>
@@ -96,7 +97,7 @@ class Register extends Component {
                             </View>
                             :
                             <TouchableOpacity style={styles.input} onPress={() => this.setState({ showCamera: true })}>
-                                <Text>Foto de perfil</Text>
+                                <Text style={styles.fotoDePerfilText}>Foto de perfil</Text>
                             </TouchableOpacity>
                             //<MyCamera style={styles.camara} traerUrlDeFoto = {url=>this.traerUrlDeFoto(url)} />
                          }  
@@ -108,13 +109,14 @@ class Register extends Component {
                             secureTextEntry={true}
                             value={this.state.password}
                         />
+                        <Text>{this.state.error}</Text>
                         {
                             this.state.email.length > 0 && this.state.password.length>0?
                                 <TouchableOpacity style={styles.button} onPress={()=>this.register(this.state.email, this.state.userName, this.state.miniBio, this.state.fotoDePerfil, this.state.password)}>
                                     <Text style={styles.textButton}>Registrarse</Text>    
                                 </TouchableOpacity>
                                 :
-                                <Text>Complete todos los campos</Text>
+                                <Text style={styles.completar}>Complete todos los campos</Text>
                         }
                         <TouchableOpacity style={styles.login} onPress={ () => this.props.navigation.navigate('Login')}>
                             <Text style={styles.loginText}>
@@ -125,10 +127,17 @@ class Register extends Component {
                     </View>
                 </View>
             </ImageBackground>
+            </ScrollView>
         )
     }
 }
 const styles = StyleSheet.create({
+    scroll:{
+        backgroundColor:"#e8e8e8"
+    },
+    fondo:{
+        flex:6,
+    },
     Container:{
         flex:6,
         flexWrap: 'wrap',
@@ -146,7 +155,7 @@ const styles = StyleSheet.create({
         fontSize: 60,
         textAlign: 'center',
         alignSelf:"center",
-        color:"white",
+        color:"#ff8fab",
         fontWeight: 'bold',
         fontFamily: 'tahoma',
     },
@@ -159,7 +168,7 @@ const styles = StyleSheet.create({
         height:20,
         fontSize:20,
         color:"white",
-        paddingVertical: 35,
+        paddingVertical: 30,
         paddingHorizontal: 40,
         borderRadius:70, 
         /*borderBottomWidth:4,
@@ -190,6 +199,22 @@ const styles = StyleSheet.create({
     },
     loginTextNegrita:{
         fontWeight: 'bold',
+    },
+    completar:{
+        backgroundColor:'#79D3BE',
+        paddingHorizontal: 10,
+        paddingVertical: 6,
+        textAlign: 'center',
+        borderRadius:4, 
+        color:'white',
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontFamily: 'tahoma',
+    },
+    fotoDePerfilText:{
+        color:"white",
+        fontWeight: 'bold',
+        fontFamily: 'tahoma',
     }
 })
 export default Register;
