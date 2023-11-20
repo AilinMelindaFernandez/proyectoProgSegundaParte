@@ -78,14 +78,19 @@ class MiPerfil extends Component {
         console.log(this.state.usuario)
         console.log(this.state.resultado[0])
         return(
-            <View>
-                <Text>perfil</Text>
-                <TouchableOpacity onPress={()=>this.logout()}>
-                    <Text>Logout</Text>
-                </TouchableOpacity>
+            <View style={styles.container}>
+                <View style={styles.profileContainer} >
+                <Text style={styles.profileInfoContainer}>perfil</Text>
                 <TouchableOpacity onPress={()=>this.props.navigation.navigate('editProfile',{idDocumento:this.state.resultado[0].id})}>
                     <Text>EDITAR PERFIL</Text>
                 </TouchableOpacity>
+                <TouchableOpacity onPress={()=>this.logout()}>
+                    <Text>Logout</Text>
+                </TouchableOpacity>
+
+
+                </View>
+
 
                 <FlatList 
                     data= {this.state.resultado}
@@ -148,6 +153,19 @@ class MiPerfil extends Component {
 }
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#F5F5F5',
+        paddingTop: 100,
+        paddingBottom: 40,
+      },
+      profileContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 20,
+      },
     postImg:{
         marginTop: 20,
         marginBottom: 10,
