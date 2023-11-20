@@ -24,6 +24,7 @@ function HomeStackScreen() {
                     options={{tabBarIcon:() => <FontAwesome name="home" size={24} color="black"></FontAwesome>,headerShown: false}}  
                 />
         <HomeStack.Screen name='Comentar' component={Comentar}/> 
+        <HomeStack.Screen name='Perfil' component={Perfil} />
     </HomeStack.Navigator>
     )
 }

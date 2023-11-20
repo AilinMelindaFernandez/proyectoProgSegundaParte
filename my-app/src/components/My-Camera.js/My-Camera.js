@@ -110,7 +110,7 @@ class MyCamera extends Component {
                             </TouchableOpacity>
                         </React.Fragment>
                     :
-                    <Text>La cámara no tiene permisos</Text>
+                    <Text style={styles.noPermiso}>La cámara no tiene permisos</Text>
 
                 }
             </View>
@@ -131,36 +131,44 @@ const styles = StyleSheet.create({
       height:"40vh",
     },
     button:{
-        backgroundColor:'#28a745',
+        backgroundColor:'#B9EEE1',
         paddingHorizontal: 10,
         paddingVertical: 6,
         textAlign: 'center',
         borderRadius:4, 
         borderWidth:1,
         borderStyle: 'solid',
-        borderColor: '#28a745'
+        borderColor: '#79D3BE',
     },
     textButton:{
-        color: '#fff',
-        textAlign: "center"
+        color:'#FF5883',
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontFamily: 'tahoma',
     },
     confirm:{
         flexDirection:"row",
         justifyContent: "space-between"
     },
     confirmButton:{
-        backgroundColor:'#28a745',
+        backgroundColor:'#79D3BE',
         paddingHorizontal: 10,
         paddingVertical: 6,
         textAlign: 'center',
         borderRadius:4, 
     },
     cancelButton:{
-        backgroundColor:'#dc3545',
+        backgroundColor:'#FEC9D7',
         paddingHorizontal: 10,
         paddingVertical: 6,
         textAlign: 'center',
         borderRadius:4, 
+    },
+    noPermiso:{
+        color:"#39B89A",
+        fontSize: 15,
+        marginTop:30,
+        textAlign:"center"
     }
 })
 

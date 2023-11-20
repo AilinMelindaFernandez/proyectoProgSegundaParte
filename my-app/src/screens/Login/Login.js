@@ -26,9 +26,9 @@ class Login extends Component {
     login(email, pass) {
         auth.signInWithEmailAndPassword(email, pass)
             .then(resp => {
-                console.log('Login ok', response);
+                console.log('Login ok', resp);
 
-                this.props.navigation.navigate('Menu')
+                this.props.navigation.navigate('Home')
             })
             .catch((e) => { 
                 console.log(e)

@@ -19,7 +19,7 @@ class Busqueda extends Component {
         this.setState({inputBusqueda: input})
         
      
-        db.collection('users').where('userName','==',input).onSnapshot(
+        db.collection('users').where('owner','==',input).onSnapshot(
             docs =>{
                 let users =[];
                 docs.forEach(doc => {
@@ -47,29 +47,28 @@ class Busqueda extends Component {
         
     }
     
-   
     render(){
         console.log(this.state.resultado)
         return(
             <View style={styles.formContainer}>
                 <View >
-                    <Text>BUSQUEDA</Text>
+                    <Text style={styles.titulo}>BUSQUEDA</Text>
                     <TextInput
                         style={styles.input}
                         onChangeText={(text)=>this.busqueda(text)}
-                        placeholder='Buscar'
+                        placeholder='Buscar usuario por Email'
                         keyboardType='default'
                         value={this.state.inputBusqueda}
                     />
                     
                     
                 </View>
-                <View>
-                    <Text>Resultados de la busqueda</Text>
+                <View style={styles.containerResultadoYtitulo}>
+                    <Text style={styles.TituloResultado}>Resultados de la busqueda</Text>
                     { 
                     
                         this.state.resultado.length == 0 && this.state.hayOno == false?
-                        <Text>no hay nada bue</Text>
+                        <Text style={styles.noHay}>No hay resultados que coincidan con la busqueda</Text>
 
                         :
                         <View>
@@ -79,17 +78,24 @@ class Busqueda extends Component {
                            renderItem={({item}) =>
                            
                            <View>
-                                
                                 {
                                     
                                     item.data.owner == auth.currentUser.email ?
-                                        <TouchableOpacity  style={styles.containerResultado} onPress={ () => this.props.navigation.jumpTo('Mi perfil')}>
-                                            <Text>{item.data.userName},{item.data.owner}</Text>
+                                        <TouchableOpacity  style={styles.containerResultado} onPress={ () => this.props.navigation.navigate('Mi perfil')}>
+                                            <Image style={styles.imagen} source={{uri:item.data.fotoDePerfil}} resizeMode='cover'/>
+                                            <View tyle={styles.containerText}>
+                                                <Text style={styles.textResultado}>{item.data.userName}</Text>
+                                                <Text style={styles.textResultado}>{item.data.owner}</Text>
+                                            </View>
                                         </TouchableOpacity>
                                     :
-                                    <TouchableOpacity style={styles.containerResultado} onPress={ () => this.props.navigation.navigate('Perfil',{owner:item.data.owner})}>
-                                        <Text style={styles.containerText}>{item.data.userName},{item.data.owner}</Text>
-                                    </TouchableOpacity>
+                                        <TouchableOpacity style={styles.containerResultado} onPress={ () => this.props.navigation.navigate('Perfil',{owner:item.data.owner})}>
+                                            <Image style={styles.imagen} source={{uri:item.data.fotoDePerfil}} resizeMode='cover'/>
+                                            <View tyle={styles.containerText}>
+                                                <Text style={styles.textResultado}>{item.data.userName}</Text>
+                                                <Text style={styles.textResultado}>{item.data.owner}</Text>
+                                            </View>                                        
+                                        </TouchableOpacity>
                                  }
                            </View>}
                              
@@ -109,33 +115,87 @@ class Busqueda extends Component {
 }
 const styles = StyleSheet.create({
     formContainer:{
-        paddingHorizontal:10,
-        marginTop: 20,
-        
+       // paddingHorizontal:10,
+        //marginTop: 20,
+        flex:6,
+        flexWrap: 'wrap',
+        paddingHorizontal:30,
+        paddingVertical:60,
+        flexDirection: "colum",
+        justifyContent:"flex-start",
+        alingItems:"center",
+        backgroundColor: 'white',
+    },
+    titulo:{
+        flex:1,
+        marginVertical:20,
+        fontSize: 35,
+        textAlign: 'center',
+        alignSelf:"center",
+        color:"#ff8fab",
+        fontWeight: 'bold',
+        fontFamily: 'tahoma',
     },
     input:{
-        height:30,
-        paddingVertical:15,
-        paddingHorizontal: 10,
-        borderWidth:1,
-        borderColor: '#ccc',
-        borderStyle: 'solid',
-        borderRadius: 6,
-        marginVertical:10,
+        backgroundColor:"#ff8fab",
+        height:20,
+        fontSize:20,
+        color:"white",
+        paddingVertical: 20,
+        paddingHorizontal: 40,
+        borderRadius:70, 
+        /*borderBottomWidth:4,
+        borderBottomColor:"white",*/
+        marginVertical:20,
+        
+    },
+    containerResultadoYtitulo:{
+        marginTop:40,
+        marginBottom:30,
+    },
+    TituloResultado:{
+        fontSize: 20,
+        color:"#EC698F",
+        fontFamily: 'tahoma',
+    },
+    noHay:{
+        color:"#39B89A",
+        fontSize: 15,
+        marginTop:30,
+        textAlign:"center"
     },
     containerResultado:{
-        height:50,
-        paddingVertical:15,
-        paddingHorizontal: 10,
+        height:73,
+        paddingVertical:10,
+        paddingHorizontal: 20,
         borderWidth:2,
         borderColor: '#EC698F',
         borderStyle: 'solid',
         borderRadius: 10,
         marginVertical:10,
+
+        flexWrap: 'wrap',
+        flexDirection: "row",
+        justifyContent:"flex-start",
+        alingItems:"center",
     },
     containerText:{
-        backgroundColor:'pink',
+        marginTop:50,
+        backgroundColor:'white',
+        flexWrap: 'wrap',
+        flexDirection: "colum",
+        justifyContent:"flex-start",
+        alingItems:"center",
     },
+    textResultado:{
+        marginVertical:1
+    },
+    imagen:{
+        marginRight:10,
+        height:50,
+        width:50,
+        borderRadius:"50%",
+    }
 })
 
 
